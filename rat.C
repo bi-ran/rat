@@ -71,23 +71,16 @@ int turnon(const char* hlt, const char* forest, const char* output) {
    SETVEC(float, eledPhiAtVtx, teg)
    SETVEC(int, eleMissHits, teg)
 
-   constexpr int nbins = 15;
-   constexpr float bins[nbins + 1] = {
+   constexpr int nptb = 15;
+   constexpr float ptb[nptb + 1] = {
       0, 10, 20, 30, 35, 40, 45, 50, 55,
       60, 70, 80, 100, 120, 150, 200
    };
 
-   std::map<std::string, std::pair<
-      std::string, std::string>> desc;
+   std::map<std::string, std::pair<std::string, std::string>> desc;
 
-   std::map<std::string, std::pair<TH1F*, TH1F*>> loose;
-   desc.emplace("loose", std::make_pair(
-      "H/E < 0.2", ";p_{T};efficiency"));
-   TRIGGERS(BOOK, loose, nbins, bins)
-   std::map<std::string, std::pair<TH1F*, TH1F*>> tight;
-   desc.emplace("tight", std::make_pair(
-      "2015 veto ID", ";p_{T};efficiency"));
-   TRIGGERS(BOOK, tight, nbins, bins)
+   SETUP(loose, nptb, ptb, "H/E < 0.2", ";p_{T};efficiency")
+   SETUP(tight, nptb, ptb, "2015 veto ID", ";p_{T};efficiency")
 
    printf("event loop\n");
    uint64_t negentries = teg->GetEntries();

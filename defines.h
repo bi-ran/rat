@@ -83,7 +83,8 @@
       % palette.size()];
 
 #define DIVIDE(TRIGGER, label)                                 \
-   g##label.emplace(#TRIGGER, new TGraphAsymmErrors(nbins+2)); \
+   g##label.emplace(#TRIGGER, new TGraphAsymmErrors(           \
+      label[#TRIGGER].first->GetNbinsX() + 2));                \
    g##label[#TRIGGER]->Divide(                                 \
       label[#TRIGGER].first, label[#TRIGGER].second,           \
       "c1=0.683 b(1,1) mode");
@@ -101,6 +102,11 @@
 #define GRAPHS(ACTION)        \
    ACTION(loose)              \
    ACTION(tight)
+
+#define SETUP(label, nbins, bins, info, title)                 \
+   std::map<std::string, std::pair<TH1F*, TH1F*>> label;       \
+   desc.emplace(#label, std::make_pair(info, title));          \
+   TRIGGERS(BOOK, label, nbins, bins)
 
 #define PRODUCE(label)                                         \
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
