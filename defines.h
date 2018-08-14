@@ -77,6 +77,10 @@
    if (TRIGGER) label[#TRIGGER].first->Fill(val);              \
    label[#TRIGGER].second->Fill(val);
 
+#define INVFILL(TRIGGER, label, val)                           \
+   if (!TRIGGER) label[#TRIGGER].first->Fill(val);             \
+   else label[#TRIGGER].second->Fill(val);
+
 #define PALETTE(TRIGGER)                                       \
    colours.emplace(#TRIGGER, -1);                              \
    colours[#TRIGGER] = palette[(colours.size() - 1)            \
@@ -94,12 +98,17 @@
    g##label[#TRIGGER]->SetMarkerColor(colours[#TRIGGER]);      \
    g##label[#TRIGGER]->SetMarkerStyle(20);
 
-#define DRAW(TRIGGER, label)                                   \
+#define DRAW(TRIGGER, label, tag)                              \
    g##label[#TRIGGER]->SetMarkerSize(0.4);                     \
    g##label[#TRIGGER]->Draw("same");                           \
-   l##label->AddEntry(g##label[#TRIGGER], #TRIGGER, "pl");
+   l##label##tag->AddEntry(g##label[#TRIGGER], #TRIGGER, "pl");
 
-#define GRAPHS(ACTION)        \
+#define PAINT(TRIGGER, label)                                  \
+   label[#TRIGGER].first->Draw("same");                        \
+   l##label##TRIGGER->AddEntry(                                \
+      label[#TRIGGER].first, #TRIGGER, "pl");
+
+#define SELECTIONS(ACTION)    \
    ACTION(loose)              \
    ACTION(tight)
 
@@ -112,38 +121,52 @@
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
    TRIGGERS(DIVIDE, label) TRIGGERS(STYLE, label)
 
-#define PAPER(label)                                           \
-   TCanvas* c##label = new TCanvas("c" #label, "", 400, 400);  \
-   TH1F* href##label = (*label.begin()).second.first;          \
-   TH1F* hframe##label = new TH1F(                             \
-      "hframe" #label, "", 1,                                  \
-      href##label->GetBinLowEdge(1),                           \
-      href##label->GetBinLowEdge(                              \
-         href##label->GetNbinsX()));                           \
-   hframe##label->SetAxisRange(0, 1.2, "Y");                   \
-   hframe##label->SetTitle(desc[#label].second.data());        \
-   hframe##label->SetStats(0); hframe##label->Draw();          \
-   TLatex* tex##label = new TLatex();                          \
-   tex##label->SetTextFont(43); tex##label->SetTextSize(12);   \
-   tex##label->DrawLatexNDC(0.72, 0.84,                        \
+#define PAPER(label, tag)                                      \
+   TCanvas* c##label##tag = new TCanvas(                       \
+      "c" #label #tag, "", 400, 400);                          \
+   TH1F* hfr##label##tag = new TH1F("hfr" #label #tag, "", 1,  \
+      (*label.begin()).second.first->GetBinLowEdge(1),         \
+      (*label.begin()).second.first->GetBinLowEdge(            \
+         (*label.begin()).second.first->GetNbinsX() + 1));     \
+   hfr##label##tag->SetAxisRange(0, 1.2, "Y");                 \
+   hfr##label##tag->SetTitle(desc[#label].second.data());      \
+   hfr##label##tag->SetStats(0); hfr##label##tag->Draw();      \
+   TLatex* tex##label##tag = new TLatex();                     \
+   tex##label##tag->SetTextFont(43);                           \
+   tex##label##tag->SetTextSize(12);                           \
+   tex##label##tag->DrawLatexNDC(0.72, 0.84,                   \
       desc[#label].first.data());                              \
    if (desc[#label].second.find("efficiency")                  \
          != std::string::npos) {                               \
-      TLine* unity = new TLine(href##label->GetBinLowEdge(1),  \
-         1, href##label->GetBinLowEdge(                        \
-            href##label->GetNbinsX()), 1);                     \
+      TLine* unity = new TLine(                                \
+         (*label.begin()).second.first->GetBinLowEdge(1), 1,   \
+         (*label.begin()).second.first->GetBinLowEdge(         \
+            (*label.begin()).second.first->GetNbinsX()+1), 1); \
       unity->SetLineStyle(7); unity->Draw(); }                 \
-   TLegend* l##label = new TLegend(0.32, 0.4, 0.9, 0.52);      \
-   l##label->SetFillStyle(0); l##label->SetBorderSize(0);      \
-   l##label->SetTextFont(43); l##label->SetTextSize(12);
+   TLegend* l##label##tag = new TLegend(0.32, 0.4, 0.9, 0.52); \
+   l##label##tag->SetFillStyle(0);                             \
+   l##label##tag->SetBorderSize(0);                            \
+   l##label##tag->SetTextFont(43);                             \
+   l##label##tag->SetTextSize(12);
 
-#define SAVE(label)                                            \
-   c##label->SaveAs(Form(#label "-turnon-%s.pdf", output));    \
-   c##label->SaveAs(Form(#label "-turnon-%s.png", output));
+#define SAVE(label, tag)                                       \
+   c##label##tag->SaveAs(Form(                                 \
+      #label "-" #tag "-%s.pdf", output));                     \
+   c##label##tag->SaveAs(Form(                                 \
+      #label "-" #tag "-%s.png", output));
 
-#define PLOT(label)                                            \
-   PAPER(label) TRIGGERS(DRAW, label) l##label->Draw();        \
-   SAVE(label)
+#define GRAPH(label, tag)                                      \
+   PAPER(label, tag) TRIGGERS(DRAW, label, tag)                \
+   l##label##tag->Draw(); SAVE(label, tag)
+
+#define TOCURVE(label) GRAPH(label, turnon)
+
+#define DISTRIBUTION(label, TRIGGER)                           \
+   PAPER(label, TRIGGER) PAINT(TRIGGER, label)                 \
+   hfr##label##TRIGGER->SetAxisRange(                          \
+      0, label[#TRIGGER].first->GetBinContent(                 \
+         label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
+   l##label##TRIGGER->Draw(); SAVE(label, TRIGGER)
 
 #define VARIABLES(ACTION)     \
    ACTION(pt)                 \

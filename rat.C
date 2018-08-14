@@ -71,16 +71,20 @@ int turnon(const char* hlt, const char* forest, const char* output) {
    SETVEC(float, eledPhiAtVtx, teg)
    SETVEC(int, eleMissHits, teg)
 
+   TH1::SetDefaultSumw2();
+
+   std::map<std::string, std::pair<std::string, std::string>> desc;
+
    constexpr int nptb = 15;
    constexpr float ptb[nptb + 1] = {
       0, 10, 20, 30, 35, 40, 45, 50, 55,
       60, 70, 80, 100, 120, 150, 200
    };
 
-   std::map<std::string, std::pair<std::string, std::string>> desc;
-
    SETUP(loose, nptb, ptb, "H/E < 0.2", ";p_{T};efficiency")
    SETUP(tight, nptb, ptb, "2015 veto ID", ";p_{T};efficiency")
+
+   SETUP(pt, nptb, ptb, "electron p_{T}", ";p_{T};")
 
    printf("event loop\n");
    uint64_t negentries = teg->GetEntries();
@@ -103,6 +107,7 @@ int turnon(const char* hlt, const char* forest, const char* output) {
 
       FULLOFFLINEID(index)
       FILL(HLT_Ele20Gsf_v1, tight, maxPt)
+      INVFILL(HLT_Ele20Gsf_v1, pt, maxPt)
 
       int index2 = -1; float maxPt2 = 0.;
       for (std::size_t j=0; j<elePt->size() && j!=index; ++j) {
@@ -125,8 +130,10 @@ int turnon(const char* hlt, const char* forest, const char* output) {
    std::map<std::string, int> colours;
    TRIGGERS(PALETTE)
 
-   GRAPHS(PRODUCE)
-   GRAPHS(PLOT)
+   SELECTIONS(PRODUCE)
+   SELECTIONS(TOCURVE)
+
+   DISTRIBUTION(pt, HLT_Ele20Gsf_v1)
 
    return 0;
 }
