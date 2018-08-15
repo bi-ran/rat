@@ -49,6 +49,12 @@
       VETOIDENDCAP(index)                                      \
    } else { continue; }
 
+#define BIN(var, num, min, max)                                \
+   constexpr int n##var##b = num;                              \
+   auto a##var##b = edges<n##var##b>(                          \
+      min, max, expand<n##var##b>{});                          \
+   float* var##b = a##var##b.data();
+
 #define TRIGGERS(ACTION, ...)                                  \
    ACTION(HLT_Ele20Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_DoubleEle20Gsf_v1, ## __VA_ARGS__)               \
@@ -168,18 +174,18 @@
          label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
    l##label##TRIGGER->Draw(); SAVE(label, TRIGGER)
 
-#define VARIABLES(ACTION)     \
-   ACTION(pt)                 \
-   ACTION(eta)                \
-   ACTION(phi)                \
-   ACTION(sceta)              \
-   ACTION(hovere)             \
-   ACTION(sieie)              \
-   ACTION(eopinv)             \
-   ACTION(d0)                 \
-   ACTION(dz)                 \
-   ACTION(detavtx)            \
-   ACTION(dphivtx)            \
-   ACTION(misshits)
+#define VARIABLES(ACTION, ...)         \
+   ACTION(pt, ## __VA_ARGS__)          \
+   ACTION(eta, ## __VA_ARGS__)         \
+   ACTION(phi, ## __VA_ARGS__)         \
+   ACTION(sceta, ## __VA_ARGS__)       \
+   ACTION(hovere, ## __VA_ARGS__)      \
+   ACTION(sieie, ## __VA_ARGS__)       \
+   ACTION(eopinv, ## __VA_ARGS__)      \
+   ACTION(d0, ## __VA_ARGS__)          \
+   ACTION(dz, ## __VA_ARGS__)          \
+   ACTION(detavtx, ## __VA_ARGS__)     \
+   ACTION(dphivtx, ## __VA_ARGS__)     \
+   ACTION(misshits, ## __VA_ARGS__)
 
 #endif /* _DEFINES_H */
