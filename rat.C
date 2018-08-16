@@ -98,6 +98,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    VARSPEREVT(SETPEREVT, teg)
 
    std::map<std::string, std::pair<std::string, std::string>> desc;
+   std::map<uint64_t, std::map<std::string, float>> dbginfo;
 
    constexpr int nptb = 15;
    constexpr float ptb[nptb + 1] = {
@@ -143,6 +144,9 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       VARSPERELE(FILLPERELE, FWD, SEGTRIGGERS)
       VARSPEREVT(FILLPEREVT, FWD, SEGTRIGGERS)
 
+      DEBUG(HLT_Ele15GsfUM_v1,
+         maxPt > 80, pt, (*elePt)[index])
+
       int index2 = -1; float maxPt2 = 0.;
       for (std::size_t j=0; j<elePt->size()
             && j!=(uint32_t)index; ++j) {
@@ -172,6 +176,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 
    ALLVARS(VAREFF, SEGTRIGGERS)
    ALLVARS(DISTRN, SEGTRIGGERS)
+
+   DEBUGSUMMARY
 
    return 0;
 }

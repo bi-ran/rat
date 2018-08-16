@@ -72,6 +72,16 @@
          percent_pass_##TRIGGER * 100,                         \
          percent_pass_##TRIGGER * SCALE); }
 
+#define DEBUG(TRIGGER, condition, label, value)                \
+   if (!TRIGGER && condition) dbginfo[event][#label] = value;
+
+#define DEBUGSUMMARY                                           \
+   for (auto& event : dbginfo)                                 \
+      for (auto& var : event.second)                           \
+         printf("event: %zu, %s: %f\n",                        \
+            event.first, var.first.data(), var.second);        \
+   printf("counts: %zu\n", dbginfo.size());
+
 #define SETBRANCH(TRIGGER, tree, type)                         \
    SETVAR(type, TRIGGER, tree);
 
