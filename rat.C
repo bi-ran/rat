@@ -105,7 +105,7 @@ int turnon(const char* hlt, const char* forest, const char* output) {
       auto index = maxele - std::begin(*elePt);
       float maxPt = (*elePt)[index];
 
-      if ((*eleHoverE)[index] > 0.15) continue;
+      if ((*eleHoverE)[index] > 0.2) continue;
 
       SEGTRIGGERS(FILL, loose, maxPt)
       FULLOFFLINEID(index)
@@ -121,7 +121,7 @@ int turnon(const char* hlt, const char* forest, const char* output) {
       }
 
       if (index2 == -1) continue; if (maxPt2 < 20) continue;
-      if ((*eleHoverE)[index2] > 0.15) continue;
+      if ((*eleHoverE)[index2] > 0.2) continue;
 
       DEGTRIGGERS(FILL, loose, maxPt)
       FULLOFFLINEID(index2)
