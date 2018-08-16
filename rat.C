@@ -100,6 +100,7 @@ int turnon(const char* hlt, const char* forest, const char* output) {
       if (hltentry == std::end(entrymap)) continue;
       thlt->GetEntry(hltentry->second);
 
+      if (elePt->empty()) continue;
       auto maxele = std::max_element(
          std::begin(*elePt), std::end(*elePt));
       auto index = maxele - std::begin(*elePt);
