@@ -134,7 +134,7 @@ int turnon(const char* hlt, const char* forest, const char* output) {
    SELECTIONS(PRODUCE)
    SELECTIONS(TOCURVE)
 
-   VARIABLES(DISTRIBUTION, HLT_Ele20Gsf_v1)
+   VARIABLES(DISTRIBUTIONS, HLT_Ele20Gsf_v1)
 
    return 0;
 }

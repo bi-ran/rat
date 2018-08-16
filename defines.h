@@ -71,7 +71,6 @@
 
 #define VARSETBRANCH(var, tree, type, arg4, arg5)              \
    VARSETBRIMPL(var, tree, type)
-
 #define VARSETBRIMPL(var, tree, type)                          \
    SETVEC(type, ele##var, tree)
 
@@ -89,7 +88,6 @@
 
 #define VARINVFILLIMPL(var, TRIGGER)                           \
    INVFILL(TRIGGER, var, (*ele##var)[index])
-
 #define INVFILL(TRIGGER, label, val)                           \
    if (!TRIGGER) label[#TRIGGER].first->Fill(val);             \
    else label[#TRIGGER].second->Fill(val);
@@ -132,7 +130,6 @@
 
 #define VARSETUP(var, arg2, info, title)                       \
    VARSETUPIMPL(var, info, title)
-
 #define VARSETUPIMPL(var, info, title)                         \
    SETUP(var, n##var##b, var##b, info, title)
 
@@ -186,7 +183,7 @@
       0, label[#TRIGGER].first->GetBinContent(                 \
          label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
 
-#define DISTRIBUTION(label, TRIGGER, arg3, arg4, arg5)         \
+#define DISTRIBUTIONS(label, TRIGGER, arg3, arg4, arg5)        \
    DISTRNIMPL(label, TRIGGER)
 
 #define DISTRNIMPL(label, TRIGGER)                             \
