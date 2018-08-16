@@ -114,13 +114,13 @@ int turnon(const char* hlt, const char* forest, const char* output) {
       VARIABLES(VARINVFILL, HLT_Ele20Gsf_v1)
 
       int index2 = -1; float maxPt2 = 0.;
-      for (std::size_t j=0; j<elePt->size() && j!=index; ++j) {
+      for (std::size_t j=0; j<elePt->size()
+            && j!=(uint32_t)index; ++j) {
          if ((*elePt)[j] > maxPt2) {
-            index2 = j; maxPt2 = (*elePt)[j];
-         }
-      }
+            index2 = j; maxPt2 = (*elePt)[j]; }}
 
-      if (index2 == -1) continue; if (maxPt2 < 20) continue;
+      if (index2 == -1) continue;
+      if (maxPt2 < 20) continue;
       if ((*eleHoverE)[index2] > 0.2) continue;
 
       DEGTRIGGERS(FILL, loose, maxPt)
