@@ -37,7 +37,9 @@
    ACTION(dPhiAtVtx, ## __VA_ARGS__, float,                    \
       "track #Delta#phi at vertex", ";#Delta#phi;")            \
    ACTION(MissHits, ## __VA_ARGS__, int,                       \
-      "missing hits", ";d_{z};")
+      "missing hits", ";d_{z};")                               \
+   ACTION(Brem, ## __VA_ARGS__, float,                         \
+      "bremsstrahlung", ";f_{brem};")
 
 /* maintained separately for now */
 #define SETUPTOBINS                                            \
@@ -65,6 +67,7 @@
    BIN(Dz, 20, -0.2, 0.2)                                      \
    BIN(dEtaAtVtx, 20, -0.2, 0.2)                               \
    BIN(dPhiAtVtx, 20, -0.2, 0.2)                               \
-   BIN(MissHits, 8, 0, 8)
+   BIN(MissHits, 8, 0, 8)                                      \
+   BIN(Brem, 20, 0, 1.0)
 
 #endif /* _LISTS_H */
