@@ -14,8 +14,8 @@
 #include <string>
 #include <vector>
 
-#include "defines.h"
-#include "lists.h"
+#include "include/defines.h"
+#include "include/lists.h"
 
 std::vector<int> palette = {
    TColor::GetColor("#f2777a"),

@@ -173,9 +173,9 @@
 
 #define SAVE(label, tag)                                       \
    c##label##tag->SaveAs(Form(                                 \
-      #label "-" #tag "-%s.pdf", output));                     \
+      "figs/pdf/" #label "-" #tag "-%s.pdf", output));         \
    c##label##tag->SaveAs(Form(                                 \
-      #label "-" #tag "-%s.png", output));
+      "figs/png/" #label "-" #tag "-%s.png", output));
 
 #define GRAPH(label, tag)                                      \
    PAPER(label, tag) TRIGGERS(STYLE, label)                    \
