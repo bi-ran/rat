@@ -109,15 +109,19 @@
 #define STYLE(TRIGGER, label)                                  \
    g##label[#TRIGGER]->SetLineColor(colours[#TRIGGER]);        \
    g##label[#TRIGGER]->SetMarkerColor(colours[#TRIGGER]);      \
-   g##label[#TRIGGER]->SetMarkerStyle(20);
+   g##label[#TRIGGER]->SetMarkerSize(0.4);                     \
+   g##label[#TRIGGER]->SetMarkerStyle(21);
 
 #define DRAW(TRIGGER, label, tag)                              \
-   g##label[#TRIGGER]->SetMarkerSize(0.4);                     \
    g##label[#TRIGGER]->Draw("same");                           \
    l##label##tag->AddEntry(g##label[#TRIGGER], #TRIGGER, "pl");
 
+#define DECORATE(TRIGGER, label)                               \
+   label[#TRIGGER].first->SetMarkerSize(0.8);                  \
+   label[#TRIGGER].first->SetMarkerStyle(21);
+
 #define PAINT(TRIGGER, label)                                  \
-   label[#TRIGGER].first->Draw("same");                        \
+   label[#TRIGGER].first->Draw("same pe");                     \
    l##label##TRIGGER->AddEntry(                                \
       label[#TRIGGER].first, #TRIGGER, "pl");
 
@@ -134,7 +138,7 @@
 
 #define PRODUCE(label)                                         \
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
-   TRIGGERS(DIVIDE, label) TRIGGERS(STYLE, label)
+   TRIGGERS(DIVIDE, label)
 
 #define PAPER(label, tag)                                      \
    TCanvas* c##label##tag = new TCanvas(                       \
@@ -171,19 +175,23 @@
       #label "-" #tag "-%s.png", output));
 
 #define GRAPH(label, tag)                                      \
-   PAPER(label, tag) TRIGGERS(DRAW, label, tag)                \
+   PAPER(label, tag) TRIGGERS(STYLE, label)                    \
+   TRIGGERS(DRAW, label, tag)                                  \
    l##label##tag->Draw(); SAVE(label, tag)
 
 #define TOCURVE(label) GRAPH(label, turnon)
+
+#define SETYRANGE(label, TRIGGER)                              \
+   hfr##label##TRIGGER->SetAxisRange(                          \
+      0, label[#TRIGGER].first->GetBinContent(                 \
+         label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
 
 #define DISTRIBUTION(label, TRIGGER, arg3, arg4, arg5)         \
    DISTRNIMPL(label, TRIGGER)
 
 #define DISTRNIMPL(label, TRIGGER)                             \
-   PAPER(label, TRIGGER) PAINT(TRIGGER, label)                 \
-   hfr##label##TRIGGER->SetAxisRange(                          \
-      0, label[#TRIGGER].first->GetBinContent(                 \
-         label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
+   PAPER(label, TRIGGER) SETYRANGE(label, TRIGGER)             \
+   DECORATE(TRIGGER, label) PAINT(TRIGGER, label)              \
    l##label##TRIGGER->Draw(); SAVE(label, TRIGGER)
 
 #endif /* _DEFINES_H */
