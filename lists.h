@@ -39,4 +39,32 @@
    ACTION(MissHits, ## __VA_ARGS__, int,                       \
       "missing hits", ";d_{z};")
 
+/* maintained separately for now */
+#define SETUPTOBINS                                            \
+   constexpr int nptb = 15;                                    \
+   constexpr float ptb[nptb + 1] = {                           \
+      0, 10, 20, 30, 35, 40, 45, 50, 55,                       \
+      60, 70, 80, 100, 120, 150, 200};
+
+#define SETUPVARBINS                                           \
+   constexpr int nPtb = 15;                                    \
+   constexpr float Ptb[nPtb + 1] = {                           \
+      0, 10, 20, 30, 35, 40, 45, 50, 55,                       \
+      60, 70, 80, 100, 120, 150, 200};                         \
+   constexpr int nSCEtab = 14;                                 \
+   constexpr float SCEtab[nSCEtab + 1] = {                     \
+      -3.0, -2.5, -2.0, -1.566, -1.4442, -1.0, -0.5,           \
+      0.0, 0.5, 1.0, 1.4442, 1.566, 2.0, 2.5, 3.0};            \
+                                                               \
+   BIN(Eta, 20, -3.0, 3.0)                                     \
+   BIN(Phi, 32, -3.2, 3.2)                                     \
+   BIN(HoverE, 20, 0, 0.2)                                     \
+   BIN(SigmaIEtaIEta_2012, 20, 0, 0.04)                        \
+   BIN(EoverPInv, 20, 0, 0.2)                                  \
+   BIN(D0, 20, -0.2, 0.2)                                      \
+   BIN(Dz, 20, -0.2, 0.2)                                      \
+   BIN(dEtaAtVtx, 20, -0.2, 0.2)                               \
+   BIN(dPhiAtVtx, 20, -0.2, 0.2)                               \
+   BIN(MissHits, 8, 0, 8)
+
 #endif /* _LISTS_H */
