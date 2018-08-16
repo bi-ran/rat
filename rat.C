@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "defines.h"
+#include "lists.h"
 
 std::vector<int> palette = {
    TColor::GetColor("#f2777a"),
@@ -53,11 +54,10 @@ static constexpr auto edges(float min, float max, pack<I...>)
 int turnon(const char* hlt, const char* forest, const char* output) {
    TFile* fhlt = new TFile(hlt, "read");
    TTree* thlt = (TTree*)fhlt->Get("hltbitanalysis/HltTree");
+   thlt->SetBranchStatus("*", 0);
 
    TFile* ffor = new TFile(forest, "read");
    TTree* teg = (TTree*)ffor->Get("ggHiNtuplizerGED/EventTree");
-
-   thlt->SetBranchStatus("*", 0);
    teg->SetBranchStatus("*", 0);
 
    SETVAR(int32_t, Run, thlt)
@@ -77,22 +77,10 @@ int turnon(const char* hlt, const char* forest, const char* output) {
       entrymap[std::make_tuple(Run, LumiBlock, Event)] = i;
    }
 
-   TRIGGERS(SETBRANCH, thlt, int)
-
-   SETVEC(float, elePt, teg)
-   SETVEC(float, eleEta, teg)
-   SETVEC(float, elePhi, teg)
-   SETVEC(float, eleSCEta, teg)
-   SETVEC(float, eleHoverE, teg)
-   SETVEC(float, eleSigmaIEtaIEta_2012, teg)
-   SETVEC(float, eleEoverPInv, teg)
-   SETVEC(float, eleD0, teg)
-   SETVEC(float, eleDz, teg)
-   SETVEC(float, eledEtaAtVtx, teg)
-   SETVEC(float, eledPhiAtVtx, teg)
-   SETVEC(int, eleMissHits, teg)
-
    TH1::SetDefaultSumw2();
+
+   TRIGGERS(SETBRANCH, thlt, int)
+   VARIABLES(VARSETBRANCH, teg)
 
    std::map<std::string, std::pair<std::string, std::string>> desc;
 
@@ -100,6 +88,9 @@ int turnon(const char* hlt, const char* forest, const char* output) {
    constexpr float ptb[nptb + 1] = {
       0, 10, 20, 30, 35, 40, 45, 50, 55,
       60, 70, 80, 100, 120, 150, 200};
+
+   SETUP(loose, nptb, ptb, "H/E < 0.2", ";p_{T};efficiency")
+   SETUP(tight, nptb, ptb, "2015 veto ID", ";p_{T};efficiency")
 
    constexpr int nPtb = 15;
    constexpr float Ptb[nPtb + 1] = {
@@ -120,9 +111,6 @@ int turnon(const char* hlt, const char* forest, const char* output) {
    BIN(dEtaAtVtx, 20, -0.2, 0.2)
    BIN(dPhiAtVtx, 20, -0.2, 0.2)
    BIN(MissHits, 8, 0, 8)
-
-   SETUP(loose, nptb, ptb, "H/E < 0.2", ";p_{T};efficiency")
-   SETUP(tight, nptb, ptb, "2015 veto ID", ";p_{T};efficiency")
 
    VARIABLES(VARSETUP)
 

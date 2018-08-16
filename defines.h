@@ -1,9 +1,6 @@
 #ifndef _DEFINES_H
 #define _DEFINES_H
 
-/* scale factor for MB to kHz */
-#define SCALE 100000
-
 #define SETVAR(type, var, tree)                                \
    type var;                                                   \
    tree->SetBranchStatus(#var, 1);                             \
@@ -55,13 +52,11 @@
       min, max, expand<n##var##b>{});                          \
    float* var##b = a##var##b.data();
 
-#define TRIGGERS(ACTION, ...)                                  \
-   ACTION(HLT_Ele20Gsf_v1, ## __VA_ARGS__)                     \
-   ACTION(HLT_DoubleEle20Gsf_v1, ## __VA_ARGS__)               \
-   ACTION(HLT_DoubleEle20Gsf_Mass50_v1, ## __VA_ARGS__)
-
 #define COUNT(OBJ) + 1
 #define NTRIGGERS (0 TRIGGERS(COUNT))
+
+/* scale factor for MB to kHz */
+#define SCALE 100000
 
 #define RATE(TRIGGER, total)                                   \
    uint64_t pass_##TRIGGER = tin->GetEntries(#TRIGGER);        \
@@ -74,6 +69,12 @@
 #define SETBRANCH(TRIGGER, tree, type)                         \
    SETVAR(type, TRIGGER, tree);
 
+#define VARSETBRANCH(var, tree, type, arg4, arg5)              \
+   VARSETBRIMPL(var, tree, type)
+
+#define VARSETBRIMPL(var, tree, type)                          \
+   SETVEC(type, ele##var, tree)
+
 #define BOOK(TRIGGER, label, nbins, bins)                      \
    label.emplace(#TRIGGER, std::make_pair(                     \
       new TH1F(#label "_pass_" #TRIGGER, "", nbins, bins),     \
@@ -83,7 +84,7 @@
    if (TRIGGER) label[#TRIGGER].first->Fill(val);              \
    label[#TRIGGER].second->Fill(val);
 
-#define VARINVFILL(var, TRIGGER, arg3, arg4)                   \
+#define VARINVFILL(var, TRIGGER, arg3, arg4, arg5)             \
    VARINVFILLIMPL(var, TRIGGER)
 
 #define VARINVFILLIMPL(var, TRIGGER)                           \
@@ -120,16 +121,15 @@
    l##label##TRIGGER->AddEntry(                                \
       label[#TRIGGER].first, #TRIGGER, "pl");
 
-#define SELECTIONS(ACTION)    \
-   ACTION(loose)              \
-   ACTION(tight)
-
 #define SETUP(label, nbins, bins, info, title)                 \
    std::map<std::string, std::pair<TH1F*, TH1F*>> label;       \
    desc.emplace(#label, std::make_pair(info, title));          \
    TRIGGERS(BOOK, label, nbins, bins)
 
-#define VARSETUP(var, info, title)                             \
+#define VARSETUP(var, arg2, info, title)                       \
+   VARSETUPIMPL(var, info, title)
+
+#define VARSETUPIMPL(var, info, title)                         \
    SETUP(var, n##var##b, var##b, info, title)
 
 #define PRODUCE(label)                                         \
@@ -176,24 +176,7 @@
 
 #define TOCURVE(label) GRAPH(label, turnon)
 
-#define VARIABLES(ACTION, ...)                                 \
-   ACTION(Pt, ## __VA_ARGS__, "p_{T}", ";p_{T};")              \
-   ACTION(Eta, ## __VA_ARGS__, "#eta", ";#eta;")               \
-   ACTION(Phi, ## __VA_ARGS__, "#phi", ";#phi;")               \
-   ACTION(SCEta, ## __VA_ARGS__, "#eta_{SC}", ";#eta_{SC};")   \
-   ACTION(HoverE, ## __VA_ARGS__, "H/E", ";H/E;")              \
-   ACTION(SigmaIEtaIEta_2012, ## __VA_ARGS__,                  \
-      "#sigma_{#eta#eta}", ";#sigma_{#eta#eta};")              \
-   ACTION(EoverPInv, ## __VA_ARGS__, "1/E-1/p", ";1/E-1/p;")   \
-   ACTION(D0, ## __VA_ARGS__, "track d_{0}", ";d_{0};")        \
-   ACTION(Dz, ## __VA_ARGS__, "track d_{z}", ";d_{z};")        \
-   ACTION(dEtaAtVtx, ## __VA_ARGS__,                           \
-      "track #Delta#eta at vertex", ";#Delta#eta;")            \
-   ACTION(dPhiAtVtx, ## __VA_ARGS__,                           \
-      "track #Delta#phi at vertex", ";#Delta#phi;")            \
-   ACTION(MissHits, ## __VA_ARGS__, "missing hits", ";d_{z};")
-
-#define DISTRIBUTION(label, TRIGGER, arg3, arg4)               \
+#define DISTRIBUTION(label, TRIGGER, arg3, arg4, arg5)         \
    DISTRNIMPL(label, TRIGGER)
 
 #define DISTRNIMPL(label, TRIGGER)                             \
