@@ -107,10 +107,9 @@ int turnon(const char* hlt, const char* forest, const char* output) {
 
       if ((*eleHoverE)[index] > 0.15) continue;
 
-      FILL(HLT_Ele20Gsf_v1, loose, maxPt)
-
+      SEGTRIGGERS(FILL, loose, maxPt)
       FULLOFFLINEID(index)
-      FILL(HLT_Ele20Gsf_v1, tight, maxPt)
+      SEGTRIGGERS(FILL, tight, maxPt)
 
       VARIABLES(VARINVFILL, HLT_Ele20Gsf_v1)
 
@@ -124,12 +123,9 @@ int turnon(const char* hlt, const char* forest, const char* output) {
       if (index2 == -1) continue; if (maxPt2 < 20) continue;
       if ((*eleHoverE)[index2] > 0.15) continue;
 
-      FILL(HLT_DoubleEle20Gsf_v1, loose, maxPt)
-      FILL(HLT_DoubleEle20Gsf_Mass50_v1, loose, maxPt)
-
+      DEGTRIGGERS(FILL, loose, maxPt)
       FULLOFFLINEID(index2)
-      FILL(HLT_DoubleEle20Gsf_v1, tight, maxPt)
-      FILL(HLT_DoubleEle20Gsf_Mass50_v1, tight, maxPt)
+      DEGTRIGGERS(FILL, tight, maxPt)
    }
 
    std::map<std::string, int> colours;
