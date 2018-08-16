@@ -149,7 +149,7 @@
    TLatex* tex##label##tag = new TLatex();                     \
    tex##label##tag->SetTextFont(43);                           \
    tex##label##tag->SetTextSize(12);                           \
-   tex##label##tag->DrawLatexNDC(0.72, 0.84,                   \
+   tex##label##tag->DrawLatexNDC(0.60, 0.84,                   \
       desc[#label].first.data());                              \
    if (desc[#label].second.find("efficiency")                  \
          != std::string::npos) {                               \
@@ -158,7 +158,7 @@
          (*label.begin()).second.first->GetBinLowEdge(         \
             (*label.begin()).second.first->GetNbinsX()+1), 1); \
       unity->SetLineStyle(7); unity->Draw(); }                 \
-   TLegend* l##label##tag = new TLegend(0.32, 0.4, 0.9, 0.52); \
+   TLegend* l##label##tag = new TLegend(0.32, 0.3, 0.9, 0.42); \
    l##label##tag->SetFillStyle(0);                             \
    l##label##tag->SetBorderSize(0);                            \
    l##label##tag->SetTextFont(43);                             \
