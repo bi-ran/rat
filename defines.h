@@ -83,6 +83,12 @@
    if (TRIGGER) label[#TRIGGER].first->Fill(val);              \
    label[#TRIGGER].second->Fill(val);
 
+#define VARINVFILL(var, TRIGGER, arg3, arg4)                   \
+   VARINVFILLIMPL(var, TRIGGER)
+
+#define VARINVFILLIMPL(var, TRIGGER)                           \
+   INVFILL(TRIGGER, var, (*ele##var)[index])
+
 #define INVFILL(TRIGGER, label, val)                           \
    if (!TRIGGER) label[#TRIGGER].first->Fill(val);             \
    else label[#TRIGGER].second->Fill(val);
@@ -122,6 +128,9 @@
    std::map<std::string, std::pair<TH1F*, TH1F*>> label;       \
    desc.emplace(#label, std::make_pair(info, title));          \
    TRIGGERS(BOOK, label, nbins, bins)
+
+#define VARSETUP(var, info, title)                             \
+   SETUP(var, n##var##b, var##b, info, title)
 
 #define PRODUCE(label)                                         \
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
@@ -167,25 +176,31 @@
 
 #define TOCURVE(label) GRAPH(label, turnon)
 
-#define DISTRIBUTION(label, TRIGGER)                           \
+#define VARIABLES(ACTION, ...)                                 \
+   ACTION(Pt, ## __VA_ARGS__, "p_{T}", ";p_{T};")              \
+   ACTION(Eta, ## __VA_ARGS__, "#eta", ";#eta;")               \
+   ACTION(Phi, ## __VA_ARGS__, "#phi", ";#phi;")               \
+   ACTION(SCEta, ## __VA_ARGS__, "#eta_{SC}", ";#eta_{SC};")   \
+   ACTION(HoverE, ## __VA_ARGS__, "H/E", ";H/E;")              \
+   ACTION(SigmaIEtaIEta_2012, ## __VA_ARGS__,                  \
+      "#sigma_{#eta#eta}", ";#sigma_{#eta#eta};")              \
+   ACTION(EoverPInv, ## __VA_ARGS__, "1/E-1/p", ";1/E-1/p;")   \
+   ACTION(D0, ## __VA_ARGS__, "track d_{0}", ";d_{0};")        \
+   ACTION(Dz, ## __VA_ARGS__, "track d_{z}", ";d_{z};")        \
+   ACTION(dEtaAtVtx, ## __VA_ARGS__,                           \
+      "track #Delta#eta at vertex", ";#Delta#eta;")            \
+   ACTION(dPhiAtVtx, ## __VA_ARGS__,                           \
+      "track #Delta#phi at vertex", ";#Delta#phi;")            \
+   ACTION(MissHits, ## __VA_ARGS__, "missing hits", ";d_{z};")
+
+#define DISTRIBUTION(label, TRIGGER, arg3, arg4)               \
+   DISTRNIMPL(label, TRIGGER)
+
+#define DISTRNIMPL(label, TRIGGER)                             \
    PAPER(label, TRIGGER) PAINT(TRIGGER, label)                 \
    hfr##label##TRIGGER->SetAxisRange(                          \
       0, label[#TRIGGER].first->GetBinContent(                 \
          label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
    l##label##TRIGGER->Draw(); SAVE(label, TRIGGER)
-
-#define VARIABLES(ACTION, ...)         \
-   ACTION(pt, ## __VA_ARGS__)          \
-   ACTION(eta, ## __VA_ARGS__)         \
-   ACTION(phi, ## __VA_ARGS__)         \
-   ACTION(sceta, ## __VA_ARGS__)       \
-   ACTION(hovere, ## __VA_ARGS__)      \
-   ACTION(sieie, ## __VA_ARGS__)       \
-   ACTION(eopinv, ## __VA_ARGS__)      \
-   ACTION(d0, ## __VA_ARGS__)          \
-   ACTION(dz, ## __VA_ARGS__)          \
-   ACTION(detavtx, ## __VA_ARGS__)     \
-   ACTION(dphivtx, ## __VA_ARGS__)     \
-   ACTION(misshits, ## __VA_ARGS__)
 
 #endif /* _DEFINES_H */

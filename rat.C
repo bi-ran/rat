@@ -100,37 +100,31 @@ int turnon(const char* hlt, const char* forest, const char* output) {
    constexpr float ptb[nptb + 1] = {
       0, 10, 20, 30, 35, 40, 45, 50, 55,
       60, 70, 80, 100, 120, 150, 200};
-   constexpr int nscetab = 14;
-   constexpr float scetab[nscetab + 1] = {
+
+   constexpr int nPtb = 15;
+   constexpr float Ptb[nPtb + 1] = {
+      0, 10, 20, 30, 35, 40, 45, 50, 55,
+      60, 70, 80, 100, 120, 150, 200};
+   constexpr int nSCEtab = 14;
+   constexpr float SCEtab[nSCEtab + 1] = {
       -3.0, -2.5, -2.0, -1.566, -1.4442, -1.0, -0.5,
       0.0, 0.5, 1.0, 1.4442, 1.566, 2.0, 2.5, 3.0};
 
-   BIN(eta, 20, -3.0, 3.0)
-   BIN(phi, 32, -3.2, 3.2)
-   BIN(hovere, 20, 0, 0.2)
-   BIN(sieie, 20, 0, 0.4)
-   BIN(eopinv, 15, 0, 0.3)
-   BIN(d0, 20, -1.0, 1.0)
-   BIN(dz, 20, -1.0, 1.0)
-   BIN(detavtx, 16, -1.6, 1.6)
-   BIN(dphivtx, 16, -1.6, 1.6)
-   BIN(misshits, 8, 0, 8)
+   BIN(Eta, 20, -3.0, 3.0)
+   BIN(Phi, 32, -3.2, 3.2)
+   BIN(HoverE, 20, 0, 0.2)
+   BIN(SigmaIEtaIEta_2012, 20, 0, 0.04)
+   BIN(EoverPInv, 20, 0, 0.2)
+   BIN(D0, 20, -0.2, 0.2)
+   BIN(Dz, 20, -0.2, 0.2)
+   BIN(dEtaAtVtx, 20, -0.2, 0.2)
+   BIN(dPhiAtVtx, 20, -0.2, 0.2)
+   BIN(MissHits, 8, 0, 8)
 
    SETUP(loose, nptb, ptb, "H/E < 0.2", ";p_{T};efficiency")
    SETUP(tight, nptb, ptb, "2015 veto ID", ";p_{T};efficiency")
 
-   SETUP(pt, nptb, ptb, "p_{T}", ";p_{T};")
-   SETUP(eta, netab, etab, "#eta", ";#eta;")
-   SETUP(phi, nphib, phib, "#phi", ";#phi;")
-   SETUP(sceta, nscetab, scetab, "#eta_{SC}", ";#eta_{SC};")
-   SETUP(hovere, nhovereb, hovereb, "H/E", ";H/E;")
-   SETUP(sieie, nsieieb, sieieb, "#sigma_{#eta#eta}", ";#sigma_{#eta#eta};")
-   SETUP(eopinv, neopinvb, eopinvb, "1/E-1/p", ";1/E-1/p;")
-   SETUP(d0, nd0b, d0b, "track d_{0}", ";d_{0};")
-   SETUP(dz, ndzb, dzb, "track d_{z}", ";d_{z};")
-   SETUP(detavtx, ndetavtxb, detavtxb, "track #Delta#eta at vertex", ";#Delta#eta;")
-   SETUP(dphivtx, ndphivtxb, dphivtxb, "track #Delta#phi at vertex", ";#Delta#phi;")
-   SETUP(misshits, nmisshitsb, misshitsb, "missing hits", ";d_{z};")
+   VARIABLES(VARSETUP)
 
    printf("event loop\n");
    uint64_t negentries = teg->GetEntries();
@@ -153,18 +147,8 @@ int turnon(const char* hlt, const char* forest, const char* output) {
 
       FULLOFFLINEID(index)
       FILL(HLT_Ele20Gsf_v1, tight, maxPt)
-      INVFILL(HLT_Ele20Gsf_v1, pt, (*elePt)[index])
-      INVFILL(HLT_Ele20Gsf_v1, eta, (*eleEta)[index])
-      INVFILL(HLT_Ele20Gsf_v1, phi, (*elePhi)[index])
-      INVFILL(HLT_Ele20Gsf_v1, sceta, (*eleSCEta)[index])
-      INVFILL(HLT_Ele20Gsf_v1, hovere, (*eleHoverE)[index])
-      INVFILL(HLT_Ele20Gsf_v1, sieie, (*eleSigmaIEtaIEta_2012)[index])
-      INVFILL(HLT_Ele20Gsf_v1, eopinv, (*eleEoverPInv)[index])
-      INVFILL(HLT_Ele20Gsf_v1, d0, (*eleD0)[index])
-      INVFILL(HLT_Ele20Gsf_v1, dz, (*eleDz)[index])
-      INVFILL(HLT_Ele20Gsf_v1, detavtx, (*eledEtaAtVtx)[index])
-      INVFILL(HLT_Ele20Gsf_v1, dphivtx, (*eledPhiAtVtx)[index])
-      INVFILL(HLT_Ele20Gsf_v1, misshits, (*eleMissHits)[index])
+
+      VARIABLES(VARINVFILL, HLT_Ele20Gsf_v1)
 
       int index2 = -1; float maxPt2 = 0.;
       for (std::size_t j=0; j<elePt->size() && j!=index; ++j) {
