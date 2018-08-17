@@ -51,13 +51,13 @@ static constexpr auto edges(float min, float max, pack<I...>)
       -> std::array<float, N+1> {
    return {{ edge<N>(min, max, I)... }}; }
 
-int turnon(const char* hlt, const char* forest, const char* output) {
+int turnon(const char* hlt, const char* skim, const char* output) {
    TFile* fhlt = new TFile(hlt, "read");
    TTree* thlt = (TTree*)fhlt->Get("hltbitanalysis/HltTree");
    thlt->SetBranchStatus("*", 0);
 
-   TFile* ffor = new TFile(forest, "read");
-   TTree* teg = (TTree*)ffor->Get("ggHiNtuplizerGED/EventTree");
+   TFile* fs = new TFile(skim, "read");
+   TTree* teg = (TTree*)fs->Get("electrons");
    teg->SetBranchStatus("*", 0);
 
    SETVAR(int32_t, Run, thlt)
@@ -154,7 +154,7 @@ int main(int argc, char* argv[]) {
    } else {
       printf("usage: %s\n"
              "       - 0 [input]\n"
-             "       - 1 [hlt] [forest] [output]\n", argv[0]);
+             "       - 1 [hlt] [skim] [output]\n", argv[0]);
       return 1;
    }
 }
