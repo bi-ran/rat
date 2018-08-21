@@ -83,7 +83,11 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    VARIABLES(VARSETBRANCH, teg)
 
    std::map<std::string, std::pair<std::string, std::string>> desc;
-   SETUPTOBINS
+
+   constexpr int nptb = 15;
+   constexpr float ptb[nptb + 1] = {
+      0, 10, 20, 30, 35, 40, 45, 50, 55,
+      60, 70, 80, 100, 120, 150, 200};
    SETUP(loose, nptb, ptb, "H/E < 0.2", ";p_{T};efficiency")
    SETUP(tight, nptb, ptb, "2015 veto ID", ";p_{T};efficiency")
 
@@ -142,11 +146,6 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 }
 
 int main(int argc, char* argv[]) {
-   if (!(NTRIGGERS)) {
-      printf("error: no triggers listed!\n");
-      return 2;
-   }
-
    if (argc == 3 && atoi(argv[1]) == 0) {
       return rate(argv[2]);
    } else if (argc == 5 && atoi(argv[1]) == 1) {
