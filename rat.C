@@ -51,6 +51,13 @@ static constexpr auto edges(float min, float max, pack<I...>)
       -> std::array<float, N+1> {
    return {{ edge<N>(min, max, I)... }}; }
 
+constexpr float hfc5ev8[21] = {
+   0.0, 13.707747, 17.489302, 22.964684, 33.696884,
+   53.345432, 78.712227, 117.589699, 171.814606, 245.829391,
+   339.122101, 453.954285, 610.016418, 795.810913, 1024.782959,
+   1306.119019, 1621.888550, 2026.141968, 2499.599365, 3094.958740, 50000
+};
+
 int turnon(const char* hlt, const char* skim, const char* output) {
    TFile* fhlt = new TFile(hlt, "read");
    TTree* thlt = (TTree*)fhlt->Get("hltbitanalysis/HltTree");
@@ -66,6 +73,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    SETVAR(uint32_t, run, teg)
    SETVAR(uint32_t, lumis, teg)
    SETVAR(ULong64_t, event, teg)
+
+   SETVAR(float, hiHF, teg)
 
    std::map<std::tuple<uint32_t, uint32_t, uint64_t>,
       uint64_t> entrymap;
@@ -90,6 +99,10 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       55, 60, 70, 80, 100, 120, 150, 200};
    SETUP(loose, nptb, ptb, "H/E < 0.2", ";p_{T};efficiency")
    SETUP(tight, nptb, ptb, "2015 veto ID", ";p_{T};efficiency")
+   SETUP(barrel, nptb, ptb, "barrel (|#eta_{SC}|<1.4442)", ";p_{T};efficiency")
+   SETUP(endcap, nptb, ptb, "endcap (|#eta_{SC}|>1.566)", ";p_{T};efficiency")
+   SETUP(central, nptb, ptb, "0 - 30% centrality", ";p_{T};efficiency")
+   SETUP(peripheral, nptb, ptb, "30 - 100% centrality", ";p_{T};efficiency")
 
    SETUPVARBINS
    VARIABLES(VARSETUP)
@@ -116,6 +129,16 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       FULLOFFLINEID(index)
       SEGTRIGGERS(FILL, tight, maxPt)
 
+      if (fabs((*eleSCEta)[index]) < 1.4442) {
+         SEGTRIGGERS(FILL, barrel, maxPt) }
+      if (fabs((*eleSCEta)[index]) > 1.566) {
+         SEGTRIGGERS(FILL, endcap, maxPt) }
+
+      if (hiHF > hfc5ev8[14]) {
+         SEGTRIGGERS(FILL, central, maxPt) }
+      else {
+         SEGTRIGGERS(FILL, peripheral, maxPt) }
+
       VARIABLES(VARINVFILL, HLT_Ele20Gsf_v1)
 
       int index2 = -1; float maxPt2 = 0.;
@@ -131,6 +154,11 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       DEGTRIGGERS(FILL, loose, maxPt)
       FULLOFFLINEID(index2)
       DEGTRIGGERS(FILL, tight, maxPt)
+
+      if (hiHF > hfc5ev8[14]) {
+         DEGTRIGGERS(FILL, central, maxPt) }
+      else {
+         DEGTRIGGERS(FILL, peripheral, maxPt) }
    }
 
    std::map<std::string, int> colours;

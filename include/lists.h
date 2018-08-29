@@ -14,7 +14,11 @@
 
 #define SELECTIONS(ACTION, ...)                                \
    ACTION(loose, ## __VA_ARGS__)                               \
-   ACTION(tight, ## __VA_ARGS__)
+   ACTION(tight, ## __VA_ARGS__)                               \
+   ACTION(barrel, ## __VA_ARGS__)                              \
+   ACTION(endcap, ## __VA_ARGS__)                              \
+   ACTION(central, ## __VA_ARGS__)                             \
+   ACTION(peripheral, ## __VA_ARGS__)
 
 #define VARIABLES(ACTION, ...)                                 \
    ACTION(Pt, ## __VA_ARGS__, float, "p_{T}", ";p_{T};")       \
