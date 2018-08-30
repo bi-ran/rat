@@ -6,7 +6,10 @@
    DEGTRIGGERS(ACTION, ## __VA_ARGS__)
 
 #define SEGTRIGGERS(ACTION, ...)                               \
-   ACTION(HLT_Ele20Gsf_v1, ## __VA_ARGS__)
+   ACTION(HLT_Ele20Gsf_v1, ## __VA_ARGS__)                     \
+   ACTION(HLT_Ele15Gsf_v1, ## __VA_ARGS__)                     \
+   ACTION(HLT_Ele10Gsf_v1, ## __VA_ARGS__)                     \
+   ACTION(HLT_Ele5Gsf_v1, ## __VA_ARGS__)
 
 #define DEGTRIGGERS(ACTION, ...)                               \
    ACTION(HLT_DoubleEle20Gsf_v1, ## __VA_ARGS__)               \
