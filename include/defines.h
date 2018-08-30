@@ -54,6 +54,7 @@
 
 #define COUNT(OBJ) + 1
 #define NTRIGGERS (0 TRIGGERS(COUNT))
+#define NSEGTRIGGERS (0 SEGTRIGGERS(COUNT))
 
 /* scale factor for MB to kHz */
 #define SCALE 100000
@@ -165,7 +166,12 @@
          (*label.begin()).second.first->GetBinLowEdge(         \
             (*label.begin()).second.first->GetNbinsX()+1), 1); \
       unity->SetLineStyle(7); unity->Draw(); }                 \
-   TLegend* l##label##tag = new TLegend(0.32, 0.3, 0.9, 0.42); \
+   float l##label##tag##y0 = std::max(0.12,                    \
+      0.48 - 0.04 * NTRIGGERS);                                \
+   float l##label##tag##y1 = std::min(0.60,                    \
+      l##label##tag##y0 + 0.04 * NTRIGGERS);                   \
+   TLegend* l##label##tag = new TLegend(                       \
+      0.32, l##label##tag##y0, 0.9, l##label##tag##y1);        \
    l##label##tag->SetFillStyle(0);                             \
    l##label##tag->SetBorderSize(0);                            \
    l##label##tag->SetTextFont(43);                             \
