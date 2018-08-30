@@ -20,7 +20,9 @@
 std::vector<int> palette = {
    TColor::GetColor("#f2777a"),
    TColor::GetColor("#99cc99"),
-   TColor::GetColor("#6699cc")
+   TColor::GetColor("#6699cc"),
+   TColor::GetColor("#f9a257"),
+   TColor::GetColor("#9966cc")
 };
 
 int rate(const char* input) {
