@@ -7,13 +7,20 @@
 
 #define SEGTRIGGERS(ACTION, ...)                               \
    ACTION(HLT_Ele20Gsf_v1, ## __VA_ARGS__)                     \
+   ACTION(HLT_Ele30Gsf_v1, ## __VA_ARGS__)                     \
+   ACTION(HLT_Ele40Gsf_v1, ## __VA_ARGS__)                     \
+   ACTION(HLT_Ele50Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_Ele15Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_Ele10Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_Ele5Gsf_v1, ## __VA_ARGS__)
 
 #define DEGTRIGGERS(ACTION, ...)                               \
    ACTION(HLT_DoubleEle20Gsf_v1, ## __VA_ARGS__)               \
-   ACTION(HLT_DoubleEle20Gsf_Mass50_v1, ## __VA_ARGS__)
+   ACTION(HLT_DoubleEle20Ele10Gsf_v1, ## __VA_ARGS__)          \
+   ACTION(HLT_DoubleEle10Gsf_v1, ## __VA_ARGS__)               \
+   ACTION(HLT_DoubleEle20Gsf_Mass50_v1, ## __VA_ARGS__)        \
+   ACTION(HLT_DoubleEle20Ele10Gsf_Mass50_v1, ## __VA_ARGS__)   \
+   ACTION(HLT_DoubleEle10Gsf_Mass50_v1, ## __VA_ARGS__)        \
 
 #define SELECTIONS(ACTION, ...)                                \
    ACTION(loose, ## __VA_ARGS__)                               \
