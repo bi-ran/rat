@@ -98,7 +98,7 @@
    colours[#TRIGGER] = palette[(colours.size() - 1)            \
       % palette.size()];
 
-#define DIVIDE(TRIGGER, label)                                 \
+#define DIVIDEIMPL(TRIGGER, label)                             \
    g##label.emplace(#TRIGGER, new TGraphAsymmErrors(           \
       label[#TRIGGER].first->GetNbinsX() + 2));                \
    g##label[#TRIGGER]->Divide(                                 \
@@ -131,10 +131,6 @@
    VARSETUPIMPL(var, info, title)
 #define VARSETUPIMPL(var, info, title)                         \
    SETUP(v##var, n##var##b, var##b, info, title)
-
-#define PRODUCE(label)                                         \
-   std::map<std::string, TGraphAsymmErrors*> g##label;         \
-   TRIGGERS(DIVIDE, label)
 
 #define VAREFF(var, TRIGGER, arg2, arg3, arg4)                 \
    VAREFFIMPL(var, TRIGGER)
@@ -183,12 +179,15 @@
    c##label##tag->SaveAs(Form(                                 \
       "figs/png/" #label "-" #tag "-%s.png", output));
 
-#define GRAPH(label, tag)                                      \
-   PAPER(label, tag) TRIGGERS(STYLE, label)                    \
-   TRIGGERS(DRAW, label, tag)                                  \
+#define DIVIDE(label)                                          \
+   std::map<std::string, TGraphAsymmErrors*> g##label;         \
+   TRIGGERS(DIVIDEIMPL, label)
+
+#define GRAPH(label, tag, TSET)                                \
+   PAPER(label, tag) TSET(STYLE, label) TSET(DRAW, label, tag) \
    l##label##tag->Draw(); SAVE(label, tag)
 
-#define TOCURVE(label) GRAPH(label, turnon)
+#define TOC(label, set) GRAPH(label, turnon_##set, set)
 
 #define AUTOYRANGE(label, TRIGGER)                             \
    hfr##label##TRIGGER->SetAxisRange(                          \

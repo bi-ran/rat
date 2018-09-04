@@ -166,8 +166,9 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    std::map<std::string, int> colours;
    TRIGGERS(PALETTE)
 
-   SELECTIONS(PRODUCE)
-   SELECTIONS(TOCURVE)
+   SELECTIONS(DIVIDE)
+   SELECTIONS(TOC, SEGTRIGGERS)
+   SELECTIONS(TOC, DEGTRIGGERS)
 
    VARIABLES(VAREFF, HLT_Ele20Gsf_v1)
    VARIABLES(DISTRIBUTIONS, HLT_Ele20Gsf_v1)
