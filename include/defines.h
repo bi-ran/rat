@@ -73,7 +73,7 @@
 #define VARSETBRANCH(var, tree, type, arg4, arg5)              \
    VARSETBRIMPL(var, tree, type)
 #define VARSETBRIMPL(var, tree, type)                          \
-   SETVEC(type, ele##var, tree)
+   SETVEC(type, var, tree)
 
 #define BOOK(TRIGGER, label, nbins, bins)                      \
    label.emplace(#TRIGGER, std::make_pair(                     \
@@ -88,7 +88,7 @@
    VARINVFILLIMPL(var, TRIGGER)
 
 #define VARINVFILLIMPL(var, TRIGGER)                           \
-   INVFILL(TRIGGER, var, (*ele##var)[index])
+   INVFILL(TRIGGER, v##var, (*var)[index])
 #define INVFILL(TRIGGER, label, val)                           \
    if (!TRIGGER) label[#TRIGGER].first->Fill(val);             \
    else label[#TRIGGER].second->Fill(val);
@@ -130,7 +130,7 @@
 #define VARSETUP(var, arg2, info, title)                       \
    VARSETUPIMPL(var, info, title)
 #define VARSETUPIMPL(var, info, title)                         \
-   SETUP(var, n##var##b, var##b, info, title)
+   SETUP(v##var, n##var##b, var##b, info, title)
 
 #define PRODUCE(label)                                         \
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
@@ -139,10 +139,10 @@
 #define VAREFF(var, TRIGGER, arg2, arg3, arg4)                 \
    VAREFFIMPL(var, TRIGGER)
 #define VAREFFIMPL(var, TRIGGER)                               \
-   std::map<std::string, TH1F*> var##eff;                      \
-   var##eff[#TRIGGER] = (TH1F*)var[#TRIGGER].first->Clone(     \
+   std::map<std::string, TH1F*> var##e;                        \
+   var##e[#TRIGGER] = (TH1F*)v##var[#TRIGGER].first->Clone(    \
       #var "_eff_" #TRIGGER);                                  \
-   var##eff[#TRIGGER]->Divide(var[#TRIGGER].second);
+   var##e[#TRIGGER]->Divide(v##var[#TRIGGER].second);
 
 #define PAPER(label, tag)                                      \
    TCanvas* c##label##tag = new TCanvas(                       \
@@ -198,14 +198,13 @@
 #define DISTRIBUTIONS(label, TRIGGER, arg3, arg4, arg5)        \
    DISTRNIMPL(label, TRIGGER)
 #define DISTRNIMPL(label, TRIGGER)                             \
-   PAPER(label, TRIGGER) DECORATE(label[#TRIGGER].first)       \
-   AUTOYRANGE(label, TRIGGER)                                  \
-   PAINT(TRIGGER, label, label[#TRIGGER].first, pe)            \
-   l##label##TRIGGER->Draw(); SAVE(label, TRIGGER)             \
-   PAPER(label, eff##TRIGGER) DECORATE(label##eff[#TRIGGER])   \
-   label##eff[#TRIGGER]->SetAxisRange(0, 0.2, "Y");            \
-   PAINT(TRIGGER, label##eff, label##eff[#TRIGGER], pe)        \
-   l##label##eff##TRIGGER->Draw();                             \
-   SAVE(label, eff##TRIGGER)
+   PAPER(v##label, TRIGGER) DECORATE(v##label[#TRIGGER].first) \
+   AUTOYRANGE(v##label, TRIGGER)                               \
+   PAINT(TRIGGER, v##label, v##label[#TRIGGER].first, pe)      \
+   l##v##label##TRIGGER->Draw(); SAVE(v##label, TRIGGER)       \
+   PAPER(v##label, e##TRIGGER) DECORATE(label##e[#TRIGGER])    \
+   label##e[#TRIGGER]->SetAxisRange(0, 0.2, "Y");              \
+   PAINT(TRIGGER, v##label##e, label##e[#TRIGGER], pe)         \
+   l##v##label##e##TRIGGER->Draw(); SAVE(v##label, e##TRIGGER)
 
 #endif /* _DEFINES_H */
