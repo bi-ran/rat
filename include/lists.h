@@ -29,12 +29,14 @@
    ACTION(HLT_DoubleEle10Gsf_Mass50_v1, ## __VA_ARGS__)        \
 
 #define SELECTIONS(ACTION, ...)                                \
-   ACTION(loose, ## __VA_ARGS__)                               \
-   ACTION(tight, ## __VA_ARGS__)                               \
-   ACTION(barrel, ## __VA_ARGS__)                              \
-   ACTION(endcap, ## __VA_ARGS__)                              \
-   ACTION(central, ## __VA_ARGS__)                             \
-   ACTION(peripheral, ## __VA_ARGS__)
+   ACTION(loose, ## __VA_ARGS__, "H/E < 0.2")                  \
+   ACTION(tight, ## __VA_ARGS__, "2015 veto ID")               \
+   ACTION(barrel, ## __VA_ARGS__,                              \
+      "barrel (|#eta_{SC}|<1.4442)")                           \
+   ACTION(endcap, ## __VA_ARGS__,                              \
+      "endcap (|#eta_{SC}|>1.566)")                            \
+   ACTION(central, ## __VA_ARGS__, "0 - 30% centrality")       \
+   ACTION(peripheral, ## __VA_ARGS__, "30 - 100% centrality")
 
 #define VARIABLES(ACTION, ...)                                 \
    ACTION(elePt, ## __VA_ARGS__, float, "p_{T}", ";p_{T};")    \

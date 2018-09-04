@@ -99,12 +99,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    constexpr float ptb[nptb + 1] = {
       0, 10, 20, 25, 30, 35, 40, 45, 50,
       55, 60, 70, 80, 100, 120, 150, 200};
-   SETUP(loose, nptb, ptb, "H/E < 0.2", ";p_{T};efficiency")
-   SETUP(tight, nptb, ptb, "2015 veto ID", ";p_{T};efficiency")
-   SETUP(barrel, nptb, ptb, "barrel (|#eta_{SC}|<1.4442)", ";p_{T};efficiency")
-   SETUP(endcap, nptb, ptb, "endcap (|#eta_{SC}|>1.566)", ";p_{T};efficiency")
-   SETUP(central, nptb, ptb, "0 - 30% centrality", ";p_{T};efficiency")
-   SETUP(peripheral, nptb, ptb, "30 - 100% centrality", ";p_{T};efficiency")
+   SELECTIONS(SELSETUP)
 
    SETUPVARBINS
    VARIABLES(VARSETUP)

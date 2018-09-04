@@ -132,6 +132,9 @@
 #define VARSETUPIMPL(var, info, title)                         \
    SETUP(v##var, n##var##b, var##b, info, title)
 
+#define SELSETUP(sel, info)                                    \
+   SETUP(sel, nptb, ptb, info, ";p_{T};efficiency")
+
 #define VAREFF(var, TRIGGER, arg2, arg3, arg4)                 \
    VAREFFIMPL(var, TRIGGER)
 #define VAREFFIMPL(var, TRIGGER)                               \
@@ -179,7 +182,7 @@
    c##label##tag->SaveAs(Form(                                 \
       "figs/png/" #label "-" #tag "-%s.png", output));
 
-#define DIVIDE(label)                                          \
+#define DIVIDE(label, arg2)                                    \
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
    TRIGGERS(DIVIDEIMPL, label)
 
@@ -187,7 +190,7 @@
    PAPER(label, tag) TSET(STYLE, label) TSET(DRAW, label, tag) \
    l##label##tag->Draw(); SAVE(label, tag)
 
-#define TOC(label, set) GRAPH(label, turnon_##set, set)
+#define TOC(label, set, arg3) GRAPH(label, turnon_##set, set)
 
 #define AUTOYRANGE(label, TRIGGER)                             \
    hfr##label##TRIGGER->SetAxisRange(                          \
