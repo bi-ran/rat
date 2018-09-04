@@ -6,10 +6,16 @@
    DEGTRIGGERS(ACTION, ## __VA_ARGS__)
 
 #define SEGTRIGGERS(ACTION, ...)                               \
+   HIGHPTSEGTRIGGERS(ACTION, ## __VA_ARGS__)                   \
+   LOWPTSEGTRIGGERS(ACTION, ## __VA_ARGS__)
+
+#define HIGHPTSEGTRIGGERS(ACTION, ...)                         \
    ACTION(HLT_Ele20Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_Ele30Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_Ele40Gsf_v1, ## __VA_ARGS__)                     \
-   ACTION(HLT_Ele50Gsf_v1, ## __VA_ARGS__)                     \
+   ACTION(HLT_Ele50Gsf_v1, ## __VA_ARGS__)
+
+#define LOWPTSEGTRIGGERS(ACTION, ...)                          \
    ACTION(HLT_Ele15Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_Ele10Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_Ele5Gsf_v1, ## __VA_ARGS__)
