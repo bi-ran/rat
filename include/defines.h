@@ -54,7 +54,6 @@
 
 #define COUNT(OBJ) + 1
 #define NTRIGGERS (0 TRIGGERS(COUNT))
-#define NSEGTRIGGERS (0 SEGTRIGGERS(COUNT))
 
 /* scale factor for MB to kHz */
 #define SCALE 100000
@@ -143,7 +142,7 @@
       #var "_eff_" #TRIGGER);                                  \
    var##e[#TRIGGER]->Divide(v##var[#TRIGGER].second);
 
-#define PAPER(label, tag)                                      \
+#define PAPER(label, tag, n)                                   \
    TCanvas* c##label##tag = new TCanvas(                       \
       "c" #label #tag, "", 400, 400);                          \
    TH1F* hfr##label##tag = new TH1F("hfr" #label #tag, "", 1,  \
@@ -165,10 +164,9 @@
          (*label.begin()).second.first->GetBinLowEdge(         \
             (*label.begin()).second.first->GetNbinsX()+1), 1); \
       unity->SetLineStyle(7); unity->Draw(); }                 \
-   float l##label##tag##y0 = std::max(0.12,                    \
-      0.48 - 0.04 * NTRIGGERS);                                \
+   float l##label##tag##y0 = std::max(0.12, 0.48 - 0.04 * n);  \
    float l##label##tag##y1 = std::min(0.60,                    \
-      l##label##tag##y0 + 0.04 * NTRIGGERS);                   \
+      l##label##tag##y0 + 0.04 * n);                           \
    TLegend* l##label##tag = new TLegend(                       \
       0.32, l##label##tag##y0, 0.9, l##label##tag##y1);        \
    l##label##tag->SetFillStyle(0);                             \
@@ -187,7 +185,8 @@
    TRIGGERS(DIVIDEIMPL, label)
 
 #define GRAPH(label, tag, TSET)                                \
-   PAPER(label, tag) TSET(STYLE, label) TSET(DRAW, label, tag) \
+   PAPER(label, tag, ( 0 TSET(COUNT)))                         \
+   TSET(STYLE, label) TSET(DRAW, label, tag)                   \
    l##label##tag->Draw(); SAVE(label, tag)
 
 #define TOC(label, set, arg3) GRAPH(label, turnon_##set, set)
@@ -200,11 +199,11 @@
 #define DISTRIBUTIONS(label, TRIGGER, arg3, arg4, arg5)        \
    DISTRNIMPL(label, TRIGGER)
 #define DISTRNIMPL(label, TRIGGER)                             \
-   PAPER(v##label, TRIGGER) DECORATE(v##label[#TRIGGER].first) \
-   AUTOYRANGE(v##label, TRIGGER)                               \
+   PAPER(v##label, TRIGGER, 1) AUTOYRANGE(v##label, TRIGGER)   \
+   DECORATE(v##label[#TRIGGER].first)                          \
    PAINT(TRIGGER, v##label, v##label[#TRIGGER].first, pe)      \
    l##v##label##TRIGGER->Draw(); SAVE(v##label, TRIGGER)       \
-   PAPER(v##label, e##TRIGGER) DECORATE(label##e[#TRIGGER])    \
+   PAPER(v##label, e##TRIGGER, 1) DECORATE(label##e[#TRIGGER]) \
    label##e[#TRIGGER]->SetAxisRange(0, 0.2, "Y");              \
    PAINT(TRIGGER, v##label##e, label##e[#TRIGGER], pe)         \
    l##v##label##e##TRIGGER->Draw(); SAVE(v##label, e##TRIGGER)
