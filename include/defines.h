@@ -69,10 +69,15 @@
 #define SETBRANCH(TRIGGER, tree, type)                         \
    SETVAR(type, TRIGGER, tree);
 
-#define VARSETBRANCH(var, tree, type, arg4, arg5)              \
-   VARSETBRIMPL(var, tree, type)
-#define VARSETBRIMPL(var, tree, type)                          \
+#define SETPERELE(var, tree, type, arg4, arg5)                 \
+   SETPERELEIMPL(var, tree, type)
+#define SETPERELEIMPL(var, tree, type)                         \
    SETVEC(type, var, tree)
+
+#define SETPEREVT(var, tree, type, arg4, arg5)                 \
+   SETPEREVTIMPL(var, tree, type)
+#define SETPEREVTIMPL(var, tree, type)                         \
+   SETVAR(type, var, tree)
 
 #define BOOK(TRIGGER, label, nbins, bins)                      \
    label.emplace(#TRIGGER, std::make_pair(                     \
@@ -83,11 +88,16 @@
    if (TRIGGER) label[#TRIGGER].first->Fill(val);              \
    label[#TRIGGER].second->Fill(val);
 
-#define VARINVFILL(var, TRIGGER, arg3, arg4, arg5)             \
-   VARINVFILLIMPL(var, TRIGGER)
-
-#define VARINVFILLIMPL(var, TRIGGER)                           \
+#define INVFILLPERELE(var, TRIGGER, arg3, arg4, arg5)          \
+   INVFILLPERELEIMPL(var, TRIGGER)
+#define INVFILLPERELEIMPL(var, TRIGGER)                        \
    INVFILL(TRIGGER, v##var, (*var)[index])
+
+#define INVFILLPEREVT(var, TRIGGER, arg3, arg4, arg5)          \
+   INVFILLPEREVTIMPL(var, TRIGGER)
+#define INVFILLPEREVTIMPL(var, TRIGGER)                        \
+   INVFILL(TRIGGER, v##var, var)
+
 #define INVFILL(TRIGGER, label, val)                           \
    if (!TRIGGER) label[#TRIGGER].first->Fill(val);             \
    else label[#TRIGGER].second->Fill(val);

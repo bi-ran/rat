@@ -38,7 +38,7 @@
    ACTION(central, ## __VA_ARGS__, "0 - 30% centrality")       \
    ACTION(peripheral, ## __VA_ARGS__, "30 - 100% centrality")
 
-#define VARIABLES(ACTION, ...)                                 \
+#define VARSPERELE(ACTION, ...)                                \
    ACTION(elePt, ## __VA_ARGS__, float, "p_{T}", ";p_{T};")    \
    ACTION(eleEta, ## __VA_ARGS__, float, "#eta", ";#eta;")     \
    ACTION(elePhi, ## __VA_ARGS__, float, "#phi", ";#phi;")     \
@@ -67,6 +67,16 @@
    ACTION(eleGenMatchIndex, ## __VA_ARGS__, int,               \
       "gen particle index", ";gen particle index;")
 
+#define VARSPEREVT(ACTION, ...)                                \
+   ACTION(elePairZMass, ## __VA_ARGS__, float,                 \
+      "invariant mass", ";M_{Z};")                             \
+   ACTION(hiHF, ## __VA_ARGS__, float,                         \
+      "#Sigma E_{T}^{HF}", ";#Sigma E_{T}^{HF};")
+
+#define ALLVARS(ACTION, ...)                                   \
+   VARSPERELE(ACTION, ## __VA_ARGS__)                          \
+   VARSPEREVT(ACTION, ## __VA_ARGS__)
+
 #define SETUPVARBINS                                           \
    BIN(elePt, 40, 0, 200)                                      \
    BIN(eleEta, 20, -3.0, 3.0)                                  \
@@ -82,6 +92,8 @@
    BIN(eleMissHits, 8, 0, 8)                                   \
    BIN(eleBrem, 20, 0, 1.0)                                    \
    BIN(eleTrkPt, 40, 0, 200)                                   \
-   BIN(eleGenMatchIndex, 11, -1, 10)
+   BIN(eleGenMatchIndex, 11, -1, 10)                           \
+   BIN(elePairZMass, 30, 60, 120)                              \
+   BIN(hiHF, 20, 0, 10000)
 
 #endif /* _LISTS_H */

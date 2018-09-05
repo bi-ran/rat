@@ -76,8 +76,6 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    SETVAR(uint32_t, lumis, teg)
    SETVAR(ULong64_t, event, teg)
 
-   SETVAR(float, hiHF, teg)
-
    std::map<std::tuple<uint32_t, uint32_t, uint64_t>,
       uint64_t> entrymap;
 
@@ -91,7 +89,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    TH1::SetDefaultSumw2();
 
    TRIGGERS(SETBRANCH, thlt, int)
-   VARIABLES(VARSETBRANCH, teg)
+   VARSPERELE(SETPERELE, teg)
+   VARSPEREVT(SETPEREVT, teg)
 
    std::map<std::string, std::pair<std::string, std::string>> desc;
 
@@ -102,7 +101,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    SELECTIONS(SELSETUP)
 
    SETUPVARBINS
-   VARIABLES(VARSETUP)
+   ALLVARS(VARSETUP)
 
    printf("event loop\n");
    uint64_t negentries = teg->GetEntries();
@@ -136,7 +135,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       else {
          SEGTRIGGERS(FILL, peripheral, maxPt) }
 
-      VARIABLES(VARINVFILL, HLT_Ele20Gsf_v1)
+      VARSPERELE(INVFILLPERELE, HLT_Ele20Gsf_v1)
+      VARSPEREVT(INVFILLPEREVT, HLT_Ele20Gsf_v1)
 
       int index2 = -1; float maxPt2 = 0.;
       for (std::size_t j=0; j<elePt->size()
@@ -166,8 +166,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    SELECTIONS(TOC, LOWPTSEGTRIGGERS)
    SELECTIONS(TOC, DEGTRIGGERS)
 
-   VARIABLES(VAREFF, HLT_Ele20Gsf_v1)
-   VARIABLES(DISTRIBUTIONS, HLT_Ele20Gsf_v1)
+   ALLVARS(VAREFF, HLT_Ele20Gsf_v1)
+   ALLVARS(DISTRIBUTIONS, HLT_Ele20Gsf_v1)
 
    return 0;
 }
