@@ -97,13 +97,6 @@
    colours[#TRIGGER] = palette[(colours.size() - 1)            \
       % palette.size()];
 
-#define DIVIDEIMPL(TRIGGER, label)                             \
-   g##label.emplace(#TRIGGER, new TGraphAsymmErrors(           \
-      label[#TRIGGER].first->GetNbinsX() + 2));                \
-   g##label[#TRIGGER]->Divide(                                 \
-      label[#TRIGGER].first, label[#TRIGGER].second,           \
-      "c1=0.683 b(1,1) mode");
-
 #define STYLE(TRIGGER, label)                                  \
    g##label[#TRIGGER]->SetLineColor(colours[#TRIGGER]);        \
    g##label[#TRIGGER]->SetMarkerColor(colours[#TRIGGER]);      \
@@ -126,13 +119,13 @@
    desc.emplace(#label, std::make_pair(info, title));          \
    TRIGGERS(BOOK, label, nbins, bins)
 
+#define SELSETUP(sel, info)                                    \
+   SETUP(sel, nptb, ptb, info, ";p_{T};efficiency")
+
 #define VARSETUP(var, arg2, info, title)                       \
    VARSETUPIMPL(var, info, title)
 #define VARSETUPIMPL(var, info, title)                         \
    SETUP(v##var, n##var##b, var##b, info, title)
-
-#define SELSETUP(sel, info)                                    \
-   SETUP(sel, nptb, ptb, info, ";p_{T};efficiency")
 
 #define VAREFF(var, TRIGGER, arg2, arg3, arg4)                 \
    VAREFFIMPL(var, TRIGGER)
@@ -183,6 +176,12 @@
 #define DIVIDE(label, arg2)                                    \
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
    TRIGGERS(DIVIDEIMPL, label)
+#define DIVIDEIMPL(TRIGGER, label)                             \
+   g##label.emplace(#TRIGGER, new TGraphAsymmErrors(           \
+      label[#TRIGGER].first->GetNbinsX() + 2));                \
+   g##label[#TRIGGER]->Divide(                                 \
+      label[#TRIGGER].first, label[#TRIGGER].second,           \
+      "c1=0.683 b(1,1) mode");
 
 #define GRAPH(label, tag, TSET)                                \
    PAPER(label, tag, ( 0 TSET(COUNT)))                         \
