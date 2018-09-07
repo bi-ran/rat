@@ -55,8 +55,8 @@
 #define COUNT(OBJ) + 1
 #define NTRIGGERS (0 TRIGGERS(COUNT))
 
-/* scale factor for MB to kHz */
-#define SCALE 100000
+/* scale factor (MB rate, in kHz) */
+#define SCALE 50000
 
 #define RATE(TRIGGER, total)                                   \
    uint64_t pass_##TRIGGER = tin->GetEntries(#TRIGGER);        \
