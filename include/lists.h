@@ -34,6 +34,10 @@
    ACTION(HLT_DoubleEle20Ele10Gsf_Mass50_v1, ## __VA_ARGS__)   \
    ACTION(HLT_DoubleEle10Gsf_Mass50_v1, ## __VA_ARGS__)
 
+#include "egxmu.h"
+
+#include "egxjet.h"
+
 #define SELECTIONS(ACTION, ...)                                \
    ACTION(loose, ## __VA_ARGS__, "H/E < 0.2")                  \
    ACTION(tight, ## __VA_ARGS__, "2015 veto ID")               \

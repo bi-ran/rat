@@ -31,6 +31,8 @@ int rate(const char* input) {
 
    uint64_t nentries = tin->GetEntries();
    TRIGGERS(RATE, nentries)
+   EGXMUTRIGGERS(RATE, nentries)
+   EGXJETTRIGGERS(RATE, nentries)
 
    return 0;
 }
