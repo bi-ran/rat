@@ -21,12 +21,18 @@
    ACTION(HLT_Ele5Gsf_v1, ## __VA_ARGS__)
 
 #define DEGTRIGGERS(ACTION, ...)                               \
+   DEGMIN20TRIGGERS(ACTION, ## __VA_ARGS__)                    \
+   DEGMIN10TRIGGERS(ACTION, ## __VA_ARGS__)
+
+#define DEGMIN20TRIGGERS(ACTION, ...)                          \
    ACTION(HLT_DoubleEle20Gsf_v1, ## __VA_ARGS__)               \
+   ACTION(HLT_DoubleEle20Gsf_Mass50_v1, ## __VA_ARGS__)
+
+#define DEGMIN10TRIGGERS(ACTION, ...)                          \
    ACTION(HLT_DoubleEle20Ele10Gsf_v1, ## __VA_ARGS__)          \
    ACTION(HLT_DoubleEle10Gsf_v1, ## __VA_ARGS__)               \
-   ACTION(HLT_DoubleEle20Gsf_Mass50_v1, ## __VA_ARGS__)        \
    ACTION(HLT_DoubleEle20Ele10Gsf_Mass50_v1, ## __VA_ARGS__)   \
-   ACTION(HLT_DoubleEle10Gsf_Mass50_v1, ## __VA_ARGS__)        \
+   ACTION(HLT_DoubleEle10Gsf_Mass50_v1, ## __VA_ARGS__)
 
 #define SELECTIONS(ACTION, ...)                                \
    ACTION(loose, ## __VA_ARGS__, "H/E < 0.2")                  \

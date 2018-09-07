@@ -145,17 +145,25 @@ int turnon(const char* hlt, const char* skim, const char* output) {
             index2 = j; maxPt2 = (*elePt)[j]; }}
 
       if (index2 == -1) continue;
-      if (maxPt2 < 20) continue;
+      if (maxPt2 < 10) continue;
       if ((*eleHoverE)[index2] > 0.2) continue;
 
-      DEGTRIGGERS(FILL, loose, maxPt)
+      DEGMIN10TRIGGERS(FILL, loose, maxPt)
+      if (maxPt2 > 20) {
+         DEGMIN20TRIGGERS(FILL, loose, maxPt) }
       FULLOFFLINEID(index2)
-      DEGTRIGGERS(FILL, tight, maxPt)
+      DEGMIN10TRIGGERS(FILL, tight, maxPt)
+      if (maxPt2 > 20) {
+         DEGMIN20TRIGGERS(FILL, tight, maxPt) }
 
       if (hiHF > hfc5ev8[14]) {
-         DEGTRIGGERS(FILL, central, maxPt) }
+         DEGMIN10TRIGGERS(FILL, central, maxPt)
+         if (maxPt2 > 20) {
+            DEGMIN20TRIGGERS(FILL, central, maxPt) } }
       else {
-         DEGTRIGGERS(FILL, peripheral, maxPt) }
+         DEGMIN10TRIGGERS(FILL, peripheral, maxPt)
+         if (maxPt2 > 20) {
+            DEGMIN20TRIGGERS(FILL, peripheral, maxPt) } }
    }
 
    std::map<std::string, int> colours;
