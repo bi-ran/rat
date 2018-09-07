@@ -53,7 +53,7 @@
    float* var##b = a##var##b.data();
 
 #define COUNT(OBJ) + 1
-#define NTRIGGERS (0 TRIGGERS(COUNT))
+#define NEGTRIGGERS (0 EGTRIGGERS(COUNT))
 
 /* scale factor (MB rate, in kHz) */
 #define SCALE 50000
@@ -127,7 +127,7 @@
 #define SETUP(label, nbins, bins, info, title)                 \
    std::map<std::string, std::pair<TH1F*, TH1F*>> label;       \
    desc.emplace(#label, std::make_pair(info, title));          \
-   TRIGGERS(BOOK, label, nbins, bins)
+   EGTRIGGERS(BOOK, label, nbins, bins)
 
 #define SELSETUP(sel, info)                                    \
    SETUP(sel, nptb, ptb, info, ";p_{T};efficiency")
@@ -185,7 +185,7 @@
 
 #define DIVIDE(label, arg2)                                    \
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
-   TRIGGERS(DIVIDEIMPL, label)
+   EGTRIGGERS(DIVIDEIMPL, label)
 #define DIVIDEIMPL(TRIGGER, label)                             \
    g##label.emplace(#TRIGGER, new TGraphAsymmErrors(           \
       label[#TRIGGER].first->GetNbinsX() + 2));                \

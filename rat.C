@@ -30,7 +30,7 @@ int rate(const char* input) {
    TTree* tin = (TTree*)fin->Get("hltbitanalysis/HltTree");
 
    uint64_t nentries = tin->GetEntries();
-   TRIGGERS(RATE, nentries)
+   EGTRIGGERS(RATE, nentries)
    EGXMUTRIGGERS(RATE, nentries)
    EGXJETTRIGGERS(RATE, nentries)
 
@@ -90,7 +90,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 
    TH1::SetDefaultSumw2();
 
-   TRIGGERS(SETBRANCH, thlt, int)
+   EGTRIGGERS(SETBRANCH, thlt, int)
    VARSPERELE(SETPERELE, teg)
    VARSPEREVT(SETPEREVT, teg)
 
@@ -169,7 +169,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    }
 
    std::map<std::string, int> colours;
-   TRIGGERS(PALETTE)
+   EGTRIGGERS(PALETTE)
 
    SELECTIONS(DIVIDE)
    SELECTIONS(TOC, HIGHPTSEGTRIGGERS)

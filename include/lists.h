@@ -1,7 +1,7 @@
 #ifndef _LISTS_H
 #define _LISTS_H
 
-#define TRIGGERS(ACTION, ...)                                  \
+#define EGTRIGGERS(ACTION, ...)                                \
    SEGTRIGGERS(ACTION, ## __VA_ARGS__)                         \
    DEGTRIGGERS(ACTION, ## __VA_ARGS__)
 
