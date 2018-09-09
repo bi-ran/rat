@@ -29,6 +29,8 @@ int rate(const char* input) {
    TFile* fin = new TFile(input, "read");
    TTree* tin = (TTree*)fin->Get("hltbitanalysis/HltTree");
 
+   auto branches = tin->GetListOfBranches();
+
    uint64_t nentries = tin->GetEntries();
    EGTRIGGERS(RATE, nentries)
    EGXMUTRIGGERS(RATE, nentries)

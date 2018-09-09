@@ -59,12 +59,14 @@
 #define SCALE 50000
 
 #define RATE(TRIGGER, total)                                   \
-   uint64_t pass_##TRIGGER = tin->GetEntries(#TRIGGER);        \
-   float percent_pass_##TRIGGER =                              \
-      (float)pass_##TRIGGER / total;                           \
-   printf(#TRIGGER "\n ^ pass: %f%%, rate: %f Hz\n",           \
-      percent_pass_##TRIGGER * 100,                            \
-      percent_pass_##TRIGGER * SCALE);
+   if (branches->FindObject(#TRIGGER)) {                       \
+      uint64_t pass_##TRIGGER = tin->GetEntries(#TRIGGER);     \
+      float percent_pass_##TRIGGER =                           \
+         (float)pass_##TRIGGER / total;                        \
+      printf(#TRIGGER "\n ^ pass: %8.5f%%\n"                   \
+            " ^ rate: %.3f Hz\n",                              \
+         percent_pass_##TRIGGER * 100,                         \
+         percent_pass_##TRIGGER * SCALE); }
 
 #define SETBRANCH(TRIGGER, tree, type)                         \
    SETVAR(type, TRIGGER, tree);
