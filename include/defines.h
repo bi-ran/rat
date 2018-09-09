@@ -1,6 +1,9 @@
 #ifndef _DEFINES_H
 #define _DEFINES_H
 
+#define CONCATENATE(a, b) a##b
+#define CAT(a, b) CONCATENATE(a, b)
+
 #define SETVAR(type, var, tree)                                \
    type var;                                                   \
    tree->SetBranchStatus(#var, 1);                             \
@@ -85,6 +88,16 @@
    label.emplace(#TRIGGER, std::make_pair(                     \
       new TH1F(#label "_pass_" #TRIGGER, "", nbins, bins),     \
       new TH1F(#label "_denom_" #TRIGGER, "", nbins, bins)));
+
+#define ACTIONIMPL(TRIGGERS, ACTION, ...)                      \
+   TRIGGERS(ACTION, ## __VA_ARGS__)
+
+#define DEGPTACTION(ACTION, pt1, pt2, ...)                     \
+   ACTIONIMPL(CAT(CAT(DEGMIN, pt1), TRIGGERS),                 \
+      ACTION, ## __VA_ARGS__)                                  \
+   if (maxPt2 > pt2) {                                         \
+      ACTIONIMPL(CAT(CAT(DEGMIN, pt2), TRIGGERS),              \
+         ACTION, ## __VA_ARGS__) }
 
 #define FILL(TRIGGER, label, val)                              \
    if (TRIGGER) label[#TRIGGER].first->Fill(val);              \

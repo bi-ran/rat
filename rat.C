@@ -152,22 +152,14 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       if (maxPt2 < 10) continue;
       if ((*eleHoverE)[index2] > 0.2) continue;
 
-      DEGMIN10TRIGGERS(FILL, loose, maxPt)
-      if (maxPt2 > 15) {
-         DEGMIN15TRIGGERS(FILL, loose, maxPt) }
+      DEGPTACTION(FILL, 10, 15, loose, maxPt)
       FULLOFFLINEID(index2)
-      DEGMIN10TRIGGERS(FILL, tight, maxPt)
-      if (maxPt2 > 15) {
-         DEGMIN15TRIGGERS(FILL, tight, maxPt) }
+      DEGPTACTION(FILL, 10, 15, tight, maxPt)
 
       if (hiHF > hfc5ev8[14]) {
-         DEGMIN10TRIGGERS(FILL, central, maxPt)
-         if (maxPt2 > 15) {
-            DEGMIN15TRIGGERS(FILL, central, maxPt) } }
+         DEGPTACTION(FILL, 10, 15, central, maxPt) }
       else {
-         DEGMIN10TRIGGERS(FILL, peripheral, maxPt)
-         if (maxPt2 > 15) {
-            DEGMIN15TRIGGERS(FILL, peripheral, maxPt) } }
+         DEGPTACTION(FILL, 10, 15, peripheral, maxPt) }
    }
 
    std::map<std::string, int> colours;
