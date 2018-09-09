@@ -129,15 +129,15 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       FULLOFFLINEID(index)
       SEGTRIGGERS(FILL, tight, maxPt)
 
-      if (fabs((*eleSCEta)[index]) < 1.4442) {
-         SEGTRIGGERS(FILL, barrel, maxPt) }
-      if (fabs((*eleSCEta)[index]) > 1.566) {
-         SEGTRIGGERS(FILL, endcap, maxPt) }
+      if (fabs((*eleSCEta)[index]) < 1.4442)
+      { SEGTRIGGERS(FILL, barrel, maxPt) }
+      if (fabs((*eleSCEta)[index]) > 1.566)
+      { SEGTRIGGERS(FILL, endcap, maxPt) }
 
-      if (hiHF > hfc5ev8[14]) {
-         SEGTRIGGERS(FILL, central, maxPt) }
-      else {
-         SEGTRIGGERS(FILL, peripheral, maxPt) }
+      if (hiHF > hfc5ev8[14])
+      { SEGTRIGGERS(FILL, central, maxPt) }
+      if (hiHF <= hfc5ev8[14])
+      { SEGTRIGGERS(FILL, peripheral, maxPt) }
 
       VARSPERELE(INVFILLPERELE, HLT_Ele20Gsf_v1)
       VARSPEREVT(INVFILLPEREVT, HLT_Ele20Gsf_v1)
@@ -156,10 +156,10 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       FULLOFFLINEID(index2)
       DEGPTACTION(FILL, 10, 15, tight, maxPt)
 
-      if (hiHF > hfc5ev8[14]) {
-         DEGPTACTION(FILL, 10, 15, central, maxPt) }
-      else {
-         DEGPTACTION(FILL, 10, 15, peripheral, maxPt) }
+      if (hiHF > hfc5ev8[14])
+      { DEGPTACTION(FILL, 10, 15, central, maxPt) }
+      if (hiHF <= hfc5ev8[14])
+      { DEGPTACTION(FILL, 10, 15, peripheral, maxPt) }
    }
 
    std::map<std::string, int> colours;
