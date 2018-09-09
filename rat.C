@@ -153,29 +153,28 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       if ((*eleHoverE)[index2] > 0.2) continue;
 
       DEGMIN10TRIGGERS(FILL, loose, maxPt)
-      if (maxPt2 > 20) {
-         DEGMIN20TRIGGERS(FILL, loose, maxPt) }
+      if (maxPt2 > 15) {
+         DEGMIN15TRIGGERS(FILL, loose, maxPt) }
       FULLOFFLINEID(index2)
       DEGMIN10TRIGGERS(FILL, tight, maxPt)
-      if (maxPt2 > 20) {
-         DEGMIN20TRIGGERS(FILL, tight, maxPt) }
+      if (maxPt2 > 15) {
+         DEGMIN15TRIGGERS(FILL, tight, maxPt) }
 
       if (hiHF > hfc5ev8[14]) {
          DEGMIN10TRIGGERS(FILL, central, maxPt)
-         if (maxPt2 > 20) {
-            DEGMIN20TRIGGERS(FILL, central, maxPt) } }
+         if (maxPt2 > 15) {
+            DEGMIN15TRIGGERS(FILL, central, maxPt) } }
       else {
          DEGMIN10TRIGGERS(FILL, peripheral, maxPt)
-         if (maxPt2 > 20) {
-            DEGMIN20TRIGGERS(FILL, peripheral, maxPt) } }
+         if (maxPt2 > 15) {
+            DEGMIN15TRIGGERS(FILL, peripheral, maxPt) } }
    }
 
    std::map<std::string, int> colours;
    EGTRIGGERS(PALETTE)
 
    SELECTIONS(DIVIDE)
-   SELECTIONS(TOC, HIGHPTSEGTRIGGERS)
-   SELECTIONS(TOC, LOWPTSEGTRIGGERS)
+   SELECTIONS(TOC, SEGTRIGGERS)
    SELECTIONS(TOC, DEGTRIGGERS)
 
    ALLVARS(VAREFF, HLT_Ele20Gsf_v1)
