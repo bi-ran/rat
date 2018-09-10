@@ -11,7 +11,13 @@
    ACTION(HLT_Ele20Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_Ele30Gsf_v1, ## __VA_ARGS__)                     \
    ACTION(HLT_Ele40Gsf_v1, ## __VA_ARGS__)                     \
-   ACTION(HLT_Ele50Gsf_v1, ## __VA_ARGS__)
+   ACTION(HLT_Ele50Gsf_v1, ## __VA_ARGS__)                     \
+   ACTION(HLT_Ele10Gsf_UM_v1, ## __VA_ARGS__)                  \
+   ACTION(HLT_Ele15Gsf_UM_v1, ## __VA_ARGS__)                  \
+   ACTION(HLT_Ele20Gsf_UM_v1, ## __VA_ARGS__)                  \
+   ACTION(HLT_Ele30Gsf_UM_v1, ## __VA_ARGS__)                  \
+   ACTION(HLT_Ele40Gsf_UM_v1, ## __VA_ARGS__)                  \
+   ACTION(HLT_Ele50Gsf_UM_v1, ## __VA_ARGS__)
 
 #define DEGTRIGGERS(ACTION, ...)                               \
    DEGMIN15TRIGGERS(ACTION, ## __VA_ARGS__)                    \
@@ -19,13 +25,19 @@
 
 #define DEGMIN15TRIGGERS(ACTION, ...)                          \
    ACTION(HLT_DoubleEle15Gsf_v1, ## __VA_ARGS__)               \
-   ACTION(HLT_DoubleEle15Gsf_Mass50_v1, ## __VA_ARGS__)
+   ACTION(HLT_DoubleEle15GsfMass50_v1, ## __VA_ARGS__)         \
+   ACTION(HLT_DoubleEle15Gsf_UM_v1, ## __VA_ARGS__)            \
+   ACTION(HLT_DoubleEle15GsfMass50_UM_v1, ## __VA_ARGS__)
 
 #define DEGMIN10TRIGGERS(ACTION, ...)                          \
    ACTION(HLT_Ele15Ele10Gsf_v1, ## __VA_ARGS__)                \
-   ACTION(HLT_Ele15Ele10Gsf_Mass50_v1, ## __VA_ARGS__)         \
+   ACTION(HLT_Ele15Ele10GsfMass50_v1, ## __VA_ARGS__)          \
    ACTION(HLT_DoubleEle10Gsf_v1, ## __VA_ARGS__)               \
-   ACTION(HLT_DoubleEle10Gsf_Mass50_v1, ## __VA_ARGS__)
+   ACTION(HLT_DoubleEle10GsfMass50_v1, ## __VA_ARGS__)         \
+   ACTION(HLT_Ele15Ele10Gsf_UM_v1, ## __VA_ARGS__)             \
+   ACTION(HLT_Ele15Ele10GsfMass50_UM_v1, ## __VA_ARGS__)       \
+   ACTION(HLT_DoubleEle10Gsf_UM_v1, ## __VA_ARGS__)            \
+   ACTION(HLT_DoubleEle10GsfMass50_UM_v1, ## __VA_ARGS__)
 
 #include "egxmu.h"
 
