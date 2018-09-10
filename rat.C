@@ -98,10 +98,10 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 
    std::map<std::string, std::pair<std::string, std::string>> desc;
 
-   constexpr int nptb = 16;
+   constexpr int nptb = 15;
    constexpr float ptb[nptb + 1] = {
-      0, 10, 20, 25, 30, 35, 40, 45, 50,
-      55, 60, 70, 80, 100, 120, 150, 200};
+      0, 10, 15, 20, 25, 30, 35, 40,
+      45, 50, 55, 60, 70, 80, 100, 120};
    SELECTIONS(SELSETUP)
 
    SETUPVARBINS
