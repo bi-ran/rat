@@ -89,33 +89,34 @@
       new TH1F(#label "_pass_" #TRIGGER, "", nbins, bins),     \
       new TH1F(#label "_denom_" #TRIGGER, "", nbins, bins)));
 
-#define ACTIONIMPL(TRIGGERS, ACTION, ...)                      \
-   TRIGGERS(ACTION, ## __VA_ARGS__)
+#define ACT(ACTION, ...) ACTION(__VA_ARGS__)
 
 #define DEGPTACTION(ACTION, pt1, pt2, ...)                     \
-   ACTIONIMPL(CAT(CAT(DEGMIN, pt1), TRIGGERS),                 \
+   ACT(CAT(CAT(DEGMIN, pt1), TRIGGERS),                        \
       ACTION, ## __VA_ARGS__)                                  \
    if (maxPt2 > pt2) {                                         \
-      ACTIONIMPL(CAT(CAT(DEGMIN, pt2), TRIGGERS),              \
+      ACT(CAT(CAT(DEGMIN, pt2), TRIGGERS),                     \
          ACTION, ## __VA_ARGS__) }
 
 #define FILL(TRIGGER, label, val)                              \
    if (TRIGGER) label[#TRIGGER].first->Fill(val);              \
    label[#TRIGGER].second->Fill(val);
 
-#define INVFILLPERELE(var, TRIGGER, arg3, arg4, arg5)          \
-   INVFILLPERELEIMPL(var, TRIGGER)
-#define INVFILLPERELEIMPL(var, TRIGGER)                        \
-   INVFILL(TRIGGER, v##var, (*var)[index])
-
-#define INVFILLPEREVT(var, TRIGGER, arg3, arg4, arg5)          \
-   INVFILLPEREVTIMPL(var, TRIGGER)
-#define INVFILLPEREVTIMPL(var, TRIGGER)                        \
-   INVFILL(TRIGGER, v##var, var)
+#define FWDFILL(...) FILL(__VA_ARGS__)
 
 #define INVFILL(TRIGGER, label, val)                           \
    if (!TRIGGER) label[#TRIGGER].first->Fill(val);             \
-   else label[#TRIGGER].second->Fill(val);
+   label[#TRIGGER].second->Fill(val);
+
+#define FILLPERELE(var, DIR, TRIGGER, arg3, arg4, arg5)        \
+   FILLPERELEIMPL(var, DIR, TRIGGER)
+#define FILLPERELEIMPL(var, DIR, TRIGGER)                      \
+   ACT(CAT(DIR, FILL), TRIGGER, v##var, (*var)[index])
+
+#define FILLPEREVT(var, DIR, TRIGGER, arg3, arg4, arg5)        \
+   FILLPEREVTIMPL(var, DIR, TRIGGER)
+#define FILLPEREVTIMPL(var, DIR, TRIGGER)                      \
+   ACT(CAT(DIR, FILL), TRIGGER, v##var, var)
 
 #define PALETTE(TRIGGER)                                       \
    colours.emplace(#TRIGGER, -1);                              \
