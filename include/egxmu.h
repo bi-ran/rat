@@ -1,19 +1,21 @@
 #define EGXMUTRIGGERS(ACTION, ...)                                   \
    ACTION(HLT_HIL1Mu3Eta2p5_EG10UM_v1, ## __VA_ARGS__)               \
-   ACTION(HLT_HIL2Mu3Eta2p5_EG10UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu3Eta2p5_EG15UM_v1, ## __VA_ARGS__)               \
-   ACTION(HLT_HIL2Mu3Eta2p5_EG15UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu3Eta2p5_EG20UM_v1, ## __VA_ARGS__)               \
-   ACTION(HLT_HIL2Mu3Eta2p5_EG20UM_v1, ## __VA_ARGS__)               \
+   ACTION(HLT_HIL1Mu3Eta2p5_EG30UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu5Eta2p5_EG10UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu5Eta2p5_EG15UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu5Eta2p5_EG20UM_v1, ## __VA_ARGS__)               \
+   ACTION(HLT_HIL1Mu5Eta2p5_EG30UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu7Eta2p5_EG10UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu7Eta2p5_EG15UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu7Eta2p5_EG20UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu12Eta2p5_EG10UM_v1, ## __VA_ARGS__)              \
    ACTION(HLT_HIL1Mu12Eta2p5_EG15UM_v1, ## __VA_ARGS__)              \
    ACTION(HLT_HIL1Mu12Eta2p5_EG20UM_v1, ## __VA_ARGS__)              \
+   ACTION(HLT_HIL2Mu3Eta2p5_EG20UM_v1, ## __VA_ARGS__)               \
+   ACTION(HLT_HIL2Mu3Eta2p5_EG10UM_v1, ## __VA_ARGS__)               \
+   ACTION(HLT_HIL2Mu3Eta2p5_EG15UM_v1, ## __VA_ARGS__)               \
    ACTION(HLT_HIL1Mu3Eta2p5_Ele10GsfUM_v1, ## __VA_ARGS__)           \
    ACTION(HLT_HIL1Mu3Eta2p5_Ele15GsfUM_v1, ## __VA_ARGS__)           \
    ACTION(HLT_HIL1Mu5Eta2p5_Ele10GsfUM_v1, ## __VA_ARGS__)           \
