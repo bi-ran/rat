@@ -64,6 +64,8 @@ constexpr float hfc5ev8[21] = {
    1306.1, 1621.9, 2026.1, 2499.6, 3095.0, 50000
 };
 
+#define PATH HLT_Ele10GsfUM_v1
+
 int turnon(const char* hlt, const char* skim, const char* output) {
    TFile* fhlt = new TFile(hlt, "read");
    TTree* thlt = (TTree*)fhlt->Get("hltbitanalysis/HltTree");
@@ -139,8 +141,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       if (hiHF <= hfc5ev8[14])
       { SEGTRIGGERS(FILL, peripheral, maxPt) }
 
-      VARSPERELE(FILLPERELE, INV, HLT_Ele20Gsf_v1)
-      VARSPEREVT(FILLPEREVT, INV, HLT_Ele20Gsf_v1)
+      VARSPERELE(FILLPERELE, INV, PATH)
+      VARSPEREVT(FILLPEREVT, INV, PATH)
 
       int index2 = -1; float maxPt2 = 0.;
       for (std::size_t j=0; j<elePt->size()
@@ -169,8 +171,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    SELECTIONS(TOC, SEGTRIGGERS)
    SELECTIONS(TOC, DEGTRIGGERS)
 
-   ALLVARS(VAREFF, HLT_Ele20Gsf_v1)
-   ALLVARS(DISTRIBUTIONS, HLT_Ele20Gsf_v1)
+   ALLVARS(VAREFF, PATH)
+   ALLVARS(DISTRIBUTIONS, PATH)
 
    return 0;
 }
