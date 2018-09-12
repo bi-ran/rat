@@ -156,10 +156,12 @@
 #define VAREFF(var, TRIGGER, arg2, arg3, arg4)                 \
    VAREFFIMPL(var, TRIGGER)
 #define VAREFFIMPL(var, TRIGGER)                               \
-   std::map<std::string, TH1F*> var##e;                        \
-   var##e[#TRIGGER] = (TH1F*)v##var[#TRIGGER].first->Clone(    \
-      #var "_eff_" #TRIGGER);                                  \
-   var##e[#TRIGGER]->Divide(v##var[#TRIGGER].second);
+   std::map<std::string, TGraphAsymmErrors*> var##e;           \
+   var##e[#TRIGGER] = new TGraphAsymmErrors(                   \
+      v##var[#TRIGGER].first->GetNbinsX() + 2);                \
+   var##e[#TRIGGER]->Divide(                                   \
+      v##var[#TRIGGER].first, v##var[#TRIGGER].second,         \
+      "c1=0.683 b(1,1) mode");
 
 #define PAPER(label, tag, n)                                   \
    TCanvas* c##label##tag = new TCanvas(                       \
@@ -229,7 +231,6 @@
    PAINT(TRIGGER, v##label, v##label[#TRIGGER].first, pe)      \
    l##v##label##TRIGGER->Draw(); SAVE(v##label, TRIGGER)       \
    PAPER(v##label, e##TRIGGER, 1) DECORATE(label##e[#TRIGGER]) \
-   label##e[#TRIGGER]->SetAxisRange(0, 0.2, "Y");              \
    PAINT(TRIGGER, v##label##e, label##e[#TRIGGER], pe)         \
    l##v##label##e##TRIGGER->Draw(); SAVE(v##label, e##TRIGGER)
 
