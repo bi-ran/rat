@@ -106,15 +106,15 @@
    if (!TRIGGER) label[#TRIGGER].first->Fill(val);             \
    label[#TRIGGER].second->Fill(val);
 
-#define FILLPERELE(var, DIR, TRIGGER, arg3, arg4, arg5)        \
-   FILLPERELEIMPL(var, DIR, TRIGGER)
-#define FILLPERELEIMPL(var, DIR, TRIGGER)                      \
-   ACT(CAT(DIR, FILL), TRIGGER, v##var, (*var)[index])
+#define FILLPERELE(var, DIR, TRIGGERS, arg3, arg4, arg5)       \
+   FILLPERELEIMPL(var, DIR, TRIGGERS)
+#define FILLPERELEIMPL(var, DIR, TRIGGERS)                     \
+   TRIGGERS(CAT(DIR, FILL), v##var, (*var)[index])
 
-#define FILLPEREVT(var, DIR, TRIGGER, arg3, arg4, arg5)        \
-   FILLPEREVTIMPL(var, DIR, TRIGGER)
-#define FILLPEREVTIMPL(var, DIR, TRIGGER)                      \
-   ACT(CAT(DIR, FILL), TRIGGER, v##var, var)
+#define FILLPEREVT(var, DIR, TRIGGERS, arg3, arg4, arg5)       \
+   FILLPEREVTIMPL(var, DIR, TRIGGERS)
+#define FILLPEREVTIMPL(var, DIR, TRIGGERS)                     \
+   TRIGGERS(CAT(DIR, FILL), v##var, var)
 
 #define PALETTE(TRIGGER)                                       \
    colours.emplace(#TRIGGER, -1);                              \
@@ -151,13 +151,15 @@
 #define VARSETUPIMPL(var, info, title)                         \
    SETUP(v##var, n##var##b, var##b, info, title)
 
-#define VAREFF(var, TRIGGER, arg2, arg3, arg4)                 \
-   VAREFFIMPL(var, TRIGGER)
-#define VAREFFIMPL(var, TRIGGER)                               \
-   std::map<std::string, TGraphAsymmErrors*> var##e;           \
-   var##e[#TRIGGER] = new TGraphAsymmErrors(                   \
+#define VAREFF(var, TRIGGERS, arg2, arg3, arg4)                \
+   VAREFFEXPAND(var, TRIGGERS)
+#define VAREFFEXPAND(var, TRIGGERS)                            \
+   std::map<std::string, TGraphAsymmErrors*> e##var;           \
+   TRIGGERS(VAREFFIMPL, var)
+#define VAREFFIMPL(TRIGGER, var)                               \
+   e##var[#TRIGGER] = new TGraphAsymmErrors(                   \
       v##var[#TRIGGER].first->GetNbinsX() + 2);                \
-   var##e[#TRIGGER]->Divide(                                   \
+   e##var[#TRIGGER]->Divide(                                   \
       v##var[#TRIGGER].first, v##var[#TRIGGER].second,         \
       "c1=0.683 b(1,1) mode");
 
@@ -221,15 +223,17 @@
       0, label[#TRIGGER].first->GetBinContent(                 \
          label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
 
-#define DISTRIBUTIONS(label, TRIGGER, arg3, arg4, arg5)        \
-   DISTRNIMPL(label, TRIGGER)
-#define DISTRNIMPL(label, TRIGGER)                             \
+#define DISTRN(label, TRIGGERS, arg3, arg4, arg5)              \
+   DISTRNEXPAND(label, TRIGGERS)
+#define DISTRNEXPAND(label, TRIGGERS)                          \
+   TRIGGERS(DISTRNIMPL, label)
+#define DISTRNIMPL(TRIGGER, label)                             \
    PAPER(v##label, TRIGGER, 1) AUTOYRANGE(v##label, TRIGGER)   \
    DECORATE(v##label[#TRIGGER].first)                          \
    PAINT(TRIGGER, v##label, v##label[#TRIGGER].first, pe)      \
    l##v##label##TRIGGER->Draw(); SAVE(v##label, TRIGGER)       \
-   PAPER(v##label, e##TRIGGER, 1) DECORATE(label##e[#TRIGGER]) \
-   PAINT(TRIGGER, v##label##e, label##e[#TRIGGER], pe)         \
+   PAPER(v##label, e##TRIGGER, 1) DECORATE(e##label[#TRIGGER]) \
+   PAINT(TRIGGER, v##label##e, e##label[#TRIGGER], pe)         \
    l##v##label##e##TRIGGER->Draw(); SAVE(v##label, e##TRIGGER)
 
 #endif /* _DEFINES_H */
