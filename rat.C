@@ -105,7 +105,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       45, 50, 55, 60, 70, 80, 100, 120};
    SELECTIONS(SELSETUP, EGTRIGGERS)
 
-   SETUPVARBINS
+   ALLVARS(BIN)
    ALLVARS(VARSETUP, SEGTRIGGERS)
 
    printf("event loop\n");

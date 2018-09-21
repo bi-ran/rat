@@ -49,8 +49,10 @@
       VETOIDENDCAP(index)                                      \
    } else { continue; }
 
-#define BIN(var, num, min, max)                                \
-   constexpr int n##var##b = num;                              \
+#define BIN(var, a0, nbins, min, max, ...)                     \
+   BINIMPL(var, nbins, min, max)
+#define BINIMPL(var, nbins, min, max)                          \
+   constexpr int n##var##b = nbins;                            \
    auto a##var##b = edges<n##var##b>(                          \
       min, max, expand<n##var##b>{});                          \
    float* var##b = a##var##b.data();
@@ -74,12 +76,12 @@
 #define SETBRANCH(TRIGGER, tree, type)                         \
    SETVAR(type, TRIGGER, tree);
 
-#define SETPERELE(var, tree, type, arg4, arg5)                 \
+#define SETPERELE(var, tree, type, ...)                        \
    SETPERELEIMPL(var, tree, type)
 #define SETPERELEIMPL(var, tree, type)                         \
    SETVEC(type, var, tree)
 
-#define SETPEREVT(var, tree, type, arg4, arg5)                 \
+#define SETPEREVT(var, tree, type, ...)                        \
    SETPEREVTIMPL(var, tree, type)
 #define SETPEREVTIMPL(var, tree, type)                         \
    SETVAR(type, var, tree)
@@ -106,12 +108,12 @@
    if (!TRIGGER) label[#TRIGGER].first->Fill(val);             \
    label[#TRIGGER].second->Fill(val);
 
-#define FILLPERELE(var, DIR, TRIGGERS, arg3, arg4, arg5)       \
+#define FILLPERELE(var, DIR, TRIGGERS, ...)                    \
    FILLPERELEIMPL(var, DIR, TRIGGERS)
 #define FILLPERELEIMPL(var, DIR, TRIGGERS)                     \
    TRIGGERS(CAT(DIR, FILL), v##var, (*var)[index])
 
-#define FILLPEREVT(var, DIR, TRIGGERS, arg3, arg4, arg5)       \
+#define FILLPEREVT(var, DIR, TRIGGERS, ...)                    \
    FILLPEREVTIMPL(var, DIR, TRIGGERS)
 #define FILLPEREVTIMPL(var, DIR, TRIGGERS)                     \
    TRIGGERS(CAT(DIR, FILL), v##var, var)
@@ -146,12 +148,12 @@
 #define SELSETUP(sel, TRIGGERS, info)                          \
    SETUP(sel, nptb, ptb, info, ";p_{T};efficiency", TRIGGERS)
 
-#define VARSETUP(var, TRIGGERS, arg2, info, title)             \
+#define VARSETUP(var, TRIGGERS, a0, a1, a2, a3, info, title)   \
    VARSETUPIMPL(var, TRIGGERS, info, title)
 #define VARSETUPIMPL(var, TRIGGERS, info, title)               \
    SETUP(v##var, n##var##b, var##b, info, title, TRIGGERS)
 
-#define VAREFF(var, TRIGGERS, arg2, arg3, arg4)                \
+#define VAREFF(var, TRIGGERS, ...)                             \
    VAREFFEXPAND(var, TRIGGERS)
 #define VAREFFEXPAND(var, TRIGGERS)                            \
    std::map<std::string, TGraphAsymmErrors*> e##var;           \
@@ -201,7 +203,7 @@
    c##label##tag->SaveAs(Form(                                 \
       "figs/png/" #label "-" #tag "-%s.png", output));
 
-#define DIVIDE(label, arg2)                                    \
+#define DIVIDE(label, ...)                                     \
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
    EGTRIGGERS(DIVIDEIMPL, label)
 #define DIVIDEIMPL(TRIGGER, label)                             \
@@ -216,14 +218,15 @@
    TSET(STYLE, label) TSET(DRAW, label, tag)                   \
    l##label##tag->Draw(); SAVE(label, tag)
 
-#define TOC(label, set, arg3) GRAPH(label, turnon_##set, set)
+#define TOC(label, set, ...)                                   \
+   GRAPH(label, turnon_##set, set)
 
 #define AUTOYRANGE(label, TRIGGER)                             \
    hfr##label##TRIGGER->SetAxisRange(                          \
       0, label[#TRIGGER].first->GetBinContent(                 \
          label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
 
-#define DISTRN(label, TRIGGERS, arg3, arg4, arg5)              \
+#define DISTRN(label, TRIGGERS, ...)                           \
    DISTRNEXPAND(label, TRIGGERS)
 #define DISTRNEXPAND(label, TRIGGERS)                          \
    TRIGGERS(DISTRNIMPL, label)
