@@ -138,18 +138,18 @@
    obj->Draw("same " #opt);                                    \
    l##label##TRIGGER->AddEntry(obj, #TRIGGER, "pl");
 
-#define SETUP(label, nbins, bins, info, title)                 \
+#define SETUP(label, nbins, bins, info, title, TRIGGERS)       \
    std::map<std::string, std::pair<TH1F*, TH1F*>> label;       \
    desc.emplace(#label, std::make_pair(info, title));          \
-   EGTRIGGERS(BOOK, label, nbins, bins)
+   TRIGGERS(BOOK, label, nbins, bins)
 
-#define SELSETUP(sel, info)                                    \
-   SETUP(sel, nptb, ptb, info, ";p_{T};efficiency")
+#define SELSETUP(sel, TRIGGERS, info)                          \
+   SETUP(sel, nptb, ptb, info, ";p_{T};efficiency", TRIGGERS)
 
-#define VARSETUP(var, arg2, info, title)                       \
-   VARSETUPIMPL(var, info, title)
-#define VARSETUPIMPL(var, info, title)                         \
-   SETUP(v##var, n##var##b, var##b, info, title)
+#define VARSETUP(var, TRIGGERS, arg2, info, title)             \
+   VARSETUPIMPL(var, TRIGGERS, info, title)
+#define VARSETUPIMPL(var, TRIGGERS, info, title)               \
+   SETUP(v##var, n##var##b, var##b, info, title, TRIGGERS)
 
 #define VAREFF(var, TRIGGERS, arg2, arg3, arg4)                \
    VAREFFEXPAND(var, TRIGGERS)
