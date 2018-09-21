@@ -142,8 +142,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       if (hiHF <= hfc5ev8[14])
       { SEGTRIGGERS(FILL, peripheral, maxPt) }
 
-      VARSPERELE(FILLPERELE, INV, PATH)
-      VARSPEREVT(FILLPEREVT, INV, PATH)
+      VARSPERELE(FILLPERELE, FWD, PATH)
+      VARSPEREVT(FILLPEREVT, FWD, PATH)
 
       int index2 = -1; float maxPt2 = 0.;
       for (std::size_t j=0; j<elePt->size()
