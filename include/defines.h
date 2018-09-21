@@ -91,12 +91,10 @@
 
 #define ACT(ACTION, ...) ACTION(__VA_ARGS__)
 
-#define DEGPTACTION(ACTION, pt1, pt2, ...)                     \
-   ACT(CAT(CAT(DEGMIN, pt1), TRIGGERS),                        \
-      ACTION, ## __VA_ARGS__)                                  \
-   if (maxPt2 > pt2) {                                         \
-      ACT(CAT(CAT(DEGMIN, pt2), TRIGGERS),                     \
-         ACTION, ## __VA_ARGS__) }
+#define DEGTRIGGERSPT(ACTION, ...)                             \
+   DEGMIN10TRIGGERS(ACTION, ## __VA_ARGS__)                    \
+   if (maxPt2 > 15) {                                          \
+      DEGMIN15TRIGGERS(ACTION, ## __VA_ARGS__) }
 
 #define FILL(TRIGGER, label, val)                              \
    if (TRIGGER) label[#TRIGGER].first->Fill(val);              \

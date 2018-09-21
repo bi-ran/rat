@@ -155,14 +155,14 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       if (maxPt2 < 10) continue;
       if ((*eleHoverE)[index2] > 0.2) continue;
 
-      DEGPTACTION(FILL, 10, 15, loose, maxPt)
+      DEGTRIGGERSPT(FILL, loose, maxPt)
       FULLOFFLINEID(index2)
-      DEGPTACTION(FILL, 10, 15, tight, maxPt)
+      DEGTRIGGERSPT(FILL, tight, maxPt)
 
       if (hiHF > hfc5ev8[14])
-      { DEGPTACTION(FILL, 10, 15, central, maxPt) }
+      { DEGTRIGGERSPT(FILL, central, maxPt) }
       if (hiHF <= hfc5ev8[14])
-      { DEGPTACTION(FILL, 10, 15, peripheral, maxPt) }
+      { DEGTRIGGERSPT(FILL, peripheral, maxPt) }
    }
 
    std::map<std::string, int> colours;
