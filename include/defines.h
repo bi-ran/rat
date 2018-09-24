@@ -61,15 +61,14 @@
 #define NEGTRIGGERS (0 EGTRIGGERS(COUNT))
 
 /* scale factor (MB rate, in kHz) */
-#define SCALE 50000
+#define SCALE 40000
 
 #define RATE(TRIGGER, total)                                   \
    if (branches->FindObject(#TRIGGER)) {                       \
       uint64_t pass_##TRIGGER = tin->GetEntries(#TRIGGER);     \
       float percent_pass_##TRIGGER =                           \
          (float)pass_##TRIGGER / total;                        \
-      printf(#TRIGGER "\n ^ pass: %8.5f%%\n"                   \
-            " ^ rate: %.3f Hz\n",                              \
+      printf("%50s > %9.5f > %9.3f\n", #TRIGGER,               \
          percent_pass_##TRIGGER * 100,                         \
          percent_pass_##TRIGGER * SCALE); }
 
