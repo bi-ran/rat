@@ -50,8 +50,6 @@
    } else { continue; }
 
 #define BIN(var, a0, nbins, min, max, ...)                     \
-   BINIMPL(var, nbins, min, max)
-#define BINIMPL(var, nbins, min, max)                          \
    constexpr int n##var##b = nbins;                            \
    auto a##var##b = edges<n##var##b>(                          \
       min, max, expand<n##var##b>{});                          \
@@ -86,13 +84,9 @@
    SETVAR(type, TRIGGER, tree);
 
 #define SETPERELE(var, tree, type, ...)                        \
-   SETPERELEIMPL(var, tree, type)
-#define SETPERELEIMPL(var, tree, type)                         \
    SETVEC(type, var, tree)
 
 #define SETPEREVT(var, tree, type, ...)                        \
-   SETPEREVTIMPL(var, tree, type)
-#define SETPEREVTIMPL(var, tree, type)                         \
    SETVAR(type, var, tree)
 
 #define BOOK(TRIGGER, label, nbins, bins)                      \
@@ -122,18 +116,13 @@
    label[#TRIGGER].second->Fill(val);
 
 #define FILLPERELE(var, DIR, TRIGGERS, ...)                    \
-   FILLPERELEIMPL(var, DIR, TRIGGERS)
-#define FILLPERELEIMPL(var, DIR, TRIGGERS)                     \
    TRIGGERS(CAT(DIR, FILL), v##var, (*var)[index])
 
 #define FILLPEREVT(var, DIR, TRIGGERS, ...)                    \
-   FILLPEREVTIMPL(var, DIR, TRIGGERS)
-#define FILLPEREVTIMPL(var, DIR, TRIGGERS)                     \
    TRIGGERS(CAT(DIR, FILL), v##var, var)
 
 #define PALETTE(TRIGGER)                                       \
-   colours.emplace(#TRIGGER, -1);                              \
-   colours[#TRIGGER] = palette[(colours.size() - 1)            \
+   colours[#TRIGGER] = palette[(colours.size())                \
       % palette.size()];
 
 #define STYLE(TRIGGER, label)                                  \
@@ -169,8 +158,6 @@
    SETUP(v##var, n##var##b, var##b, info, title, TRIGGERS)
 
 #define VAREFF(var, TRIGGERS, ...)                             \
-   VAREFFEXPAND(var, TRIGGERS)
-#define VAREFFEXPAND(var, TRIGGERS)                            \
    std::map<std::string, TGraphAsymmErrors*> e##var;           \
    TRIGGERS(VAREFFIMPL, var)
 #define VAREFFIMPL(TRIGGER, var)                               \
@@ -242,8 +229,6 @@
          label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
 
 #define DISTRN(label, TRIGGERS, ...)                           \
-   DISTRNEXPAND(label, TRIGGERS)
-#define DISTRNEXPAND(label, TRIGGERS)                          \
    TRIGGERS(DISTRNIMPL, label)
 #define DISTRNIMPL(TRIGGER, label)                             \
    PAPER(v##label, TRIGGER, 1) AUTOYRANGE(v##label, TRIGGER)   \
