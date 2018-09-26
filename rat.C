@@ -30,9 +30,9 @@ int rate(const char* input) {
    TFile* fin = new TFile(input, "read");
    TTree* tin = (TTree*)fin->Get("hltbitanalysis/HltTree");
 
-   auto branches = tin->GetListOfBranches();
+   const auto branches = tin->GetListOfBranches();
 
-   uint64_t nentries = tin->GetEntries();
+   const uint64_t nentries = tin->GetEntries();
    EGTRIGGERS(RATE, nentries)
    EGXMUTRIGGERS(RATE, nentries)
    LXJETTRIGGERS(RATE, nentries)
@@ -85,7 +85,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       uint64_t> entrymap;
 
    printf("building entry map...\n");
-   uint64_t nhltentries = thlt->GetEntries();
+   const uint64_t nhltentries = thlt->GetEntries();
    for (uint64_t i=0; i<nhltentries; ++i) {
       thlt->GetEntry(i);
       entrymap[std::make_tuple(Run, LumiBlock, Event)] = i;
@@ -110,20 +110,20 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    ALLVARS(VARSETUP, SEGTRIGGERS)
 
    printf("event loop\n");
-   uint64_t negentries = teg->GetEntries();
+   const uint64_t negentries = teg->GetEntries();
    for (uint64_t i=0; i<negentries; ++i) {
       teg->GetEntry(i);
 
-      auto hltentry = entrymap.find(std::make_tuple(
+      const auto hltentry = entrymap.find(std::make_tuple(
          run, lumis, event));
       if (hltentry == std::end(entrymap)) continue;
       thlt->GetEntry(hltentry->second);
 
       if (elePt->empty()) continue;
-      auto maxele = std::max_element(
+      const auto maxele = std::max_element(
          std::begin(*elePt), std::end(*elePt));
-      auto index = maxele - std::begin(*elePt);
-      float maxPt = (*elePt)[index];
+      const auto index = maxele - std::begin(*elePt);
+      const float maxPt = (*elePt)[index];
 
       FULLOFFLINEID(index)
 
