@@ -11,11 +11,6 @@
 
 #define MAXSIZE 2000
 
-#define SETARR(type, var, tree)                                \
-   type var[MAXSIZE];                                          \
-   tree->SetBranchStatus(#var, 1);                             \
-   tree->SetBranchAddress(#var, var);
-
 #define SETVEC(type, var, tree)                                \
    std::vector<type>* var = 0;                                 \
    tree->SetBranchStatus(#var, 1);                             \
@@ -56,19 +51,16 @@
    float* var##b = a##var##b.data();
 
 #define COUNT(OBJ) + 1
-#define NEGTRIGGERS (0 EGTRIGGERS(COUNT))
 
 /* scale factor (MB rate, in kHz) */
 #define SCALE 40000
 
 #define RATE(TRIGGER, total)                                   \
    if (branches->FindObject(#TRIGGER)) {                       \
-      uint64_t pass_##TRIGGER = tin->GetEntries(#TRIGGER);     \
-      float percent_pass_##TRIGGER =                           \
-         (float)pass_##TRIGGER / total;                        \
+      uint64_t npass_##TRIGGER = tin->GetEntries(#TRIGGER);    \
+      float ppass_##TRIGGER = (float)npass_##TRIGGER / total;  \
       printf("%50s > %9.5f > %9.3f\n", #TRIGGER,               \
-         percent_pass_##TRIGGER * 100,                         \
-         percent_pass_##TRIGGER * SCALE); }
+         ppass_##TRIGGER * 100, ppass_##TRIGGER * SCALE); }
 
 #define DEBUG(TRIGGER, condition, label, value)                \
    if (!TRIGGER && condition) dbginfo[event][#label] = value;
@@ -121,9 +113,8 @@
 #define FILLPEREVT(var, DIR, TRIGGERS, ...)                    \
    TRIGGERS(CAT(DIR, FILL), v##var, var)
 
-#define PALETTE(TRIGGER)                                       \
-   colours[#TRIGGER] = palette[(colours.size())                \
-      % palette.size()];
+#define PALETTE(T)                                             \
+   colours[#T] = palette[(colours.size()) % palette.size()];
 
 #define STYLE(TRIGGER, label)                                  \
    g##label[#TRIGGER]->SetLineColor(colours[#TRIGGER]);        \
@@ -131,18 +122,18 @@
    g##label[#TRIGGER]->SetMarkerSize(0.4);                     \
    g##label[#TRIGGER]->SetMarkerStyle(21);
 
-#define DRAW(TRIGGER, label, tag)                              \
-   g##label[#TRIGGER]->Draw("same");                           \
-   l##label##tag->AddEntry(g##label[#TRIGGER], #TRIGGER, "pl");
+#define DRAW(TRIGGER, l, t)                                    \
+   g##l[#TRIGGER]->Draw("same");                               \
+   lg##l##t->AddEntry(g##l[#TRIGGER], #TRIGGER, "pl");
 
 #define DECORATE(obj)                                          \
    obj->SetMarkerSize(0.8); obj->SetMarkerStyle(21);
 
 #define PAINT(TRIGGER, label, obj, opt)                        \
    obj->Draw("same " #opt);                                    \
-   l##label##TRIGGER->AddEntry(obj, #TRIGGER, "pl");
+   lg##label##TRIGGER->AddEntry(obj, #TRIGGER, "pl");
 
-#define SETUP(label, nbins, bins, info, title, TRIGGERS)       \
+#define SETUP(label, TRIGGERS, nbins, bins, info, title)       \
    std::map<std::string, std::pair<TH1F*, TH1F*>> label;       \
    desc.emplace(#label, std::make_pair(info, title));          \
    TRIGGERS(BOOK, label, nbins, bins)
@@ -150,16 +141,16 @@
 #define SELSETUP(sel, TRIGGERS, a0, info)                      \
    SELSETUPIMPL(sel, TRIGGERS, info)
 #define SELSETUPIMPL(sel, TRIGGERS, info)                      \
-   SETUP(sel, nptb, ptb, info, ";p_{T};efficiency", TRIGGERS)
+   SETUP(sel, TRIGGERS, nptb, ptb, info, ";p_{T};efficiency")
 
 #define VARSETUP(var, TRIGGERS, a0, a1, a2, a3, info, title)   \
    VARSETUPIMPL(var, TRIGGERS, info, title)
 #define VARSETUPIMPL(var, TRIGGERS, info, title)               \
-   SETUP(v##var, n##var##b, var##b, info, title, TRIGGERS)
+   SETUP(v##var, TRIGGERS, n##var##b, var##b, info, title)
 
 #define VAREFF(var, TRIGGERS, ...)                             \
    std::map<std::string, TGraphAsymmErrors*> e##var;           \
-   TRIGGERS(VAREFFIMPL, var)
+   ACT(TRIGGERS, VAREFFIMPL, var)
 #define VAREFFIMPL(TRIGGER, var)                               \
    e##var[#TRIGGER] = new TGraphAsymmErrors(                   \
       v##var[#TRIGGER].first->GetNbinsX() + 2);                \
@@ -167,37 +158,29 @@
       v##var[#TRIGGER].first, v##var[#TRIGGER].second,         \
       "c1=0.683 b(1,1) mode");
 
-#define PAPER(label, tag, n)                                   \
-   TCanvas* c##label##tag = new TCanvas(                       \
-      "c" #label #tag, "", 400, 400);                          \
-   TH1F* hfr##label##tag = new TH1F("hfr" #label #tag, "", 1,  \
-      (*label.begin()).second.first->GetBinLowEdge(1),         \
-      (*label.begin()).second.first->GetBinLowEdge(            \
-         (*label.begin()).second.first->GetNbinsX() + 1));     \
-   hfr##label##tag->SetAxisRange(0, 1.2, "Y");                 \
-   hfr##label##tag->SetTitle(desc[#label].second.data());      \
-   hfr##label##tag->SetStats(0); hfr##label##tag->Draw();      \
-   TLatex* tex##label##tag = new TLatex();                     \
-   tex##label##tag->SetTextFont(43);                           \
-   tex##label##tag->SetTextSize(12);                           \
-   tex##label##tag->DrawLatexNDC(0.60, 0.84,                   \
-      desc[#label].first.data());                              \
-   if (desc[#label].second.find("efficiency")                  \
-         != std::string::npos) {                               \
-      TLine* unity = new TLine(                                \
-         (*label.begin()).second.first->GetBinLowEdge(1), 1,   \
-         (*label.begin()).second.first->GetBinLowEdge(         \
-            (*label.begin()).second.first->GetNbinsX()+1), 1); \
+#define PAPER(l, t, n)                                         \
+   TCanvas* c##l##t = new TCanvas("c" #l #t, "", 400, 400);    \
+   auto hp##l##t = (*l.begin()).second.first;                  \
+   float min##l##t = hp##l##t->GetBinLowEdge(1);               \
+   float max##l##t = hp##l##t->GetBinLowEdge(                  \
+         hp##l##t->GetNbinsX() + 1);                           \
+   TH1F* hfr##l##t = new TH1F("hfr" #l #t, "",                 \
+      1, min##l##t, max##l##t);                                \
+   hfr##l##t->SetAxisRange(0, 1.2, "Y");                       \
+   hfr##l##t->SetTitle(desc[#l].second.data());                \
+   hfr##l##t->SetStats(0); hfr##l##t->Draw();                  \
+   TLatex* tex##l##t = new TLatex();                           \
+   tex##l##t->SetTextFont(43); tex##l##t->SetTextSize(12);     \
+   tex##l##t->DrawLatexNDC(0.6, 0.84, desc[#l].first.data());  \
+   if (desc[#l].second.find("eff") != std::string::npos) {     \
+      TLine* unity = new TLine(min##l##t, 1, max##l##t, 1);    \
       unity->SetLineStyle(7); unity->Draw(); }                 \
-   float l##label##tag##y0 = std::max(0.12, 0.48 - 0.04 * n);  \
-   float l##label##tag##y1 = std::min(0.60,                    \
-      l##label##tag##y0 + 0.04 * n);                           \
-   TLegend* l##label##tag = new TLegend(                       \
-      0.32, l##label##tag##y0, 0.9, l##label##tag##y1);        \
-   l##label##tag->SetFillStyle(0);                             \
-   l##label##tag->SetBorderSize(0);                            \
-   l##label##tag->SetTextFont(43);                             \
-   l##label##tag->SetTextSize(12);
+   float l##t##y0 = std::max(0.12, 0.48 - n * 0.04);           \
+   float l##t##y1 = std::min(0.60, l##t##y0 + n * 0.04);       \
+   TLegend* lg##l##t = new TLegend(                            \
+      0.32, l##t##y0, 0.9, l##t##y1);                          \
+   lg##l##t->SetFillStyle(0); lg##l##t->SetBorderSize(0);      \
+   lg##l##t->SetTextFont(43); lg##l##t->SetTextSize(12);
 
 #define SAVE(label, tag)                                       \
    c##label##tag->SaveAs(Form(                                 \
@@ -205,9 +188,9 @@
    c##label##tag->SaveAs(Form(                                 \
       "figs/png/" #label "-" #tag "-%s.png", output));
 
-#define DIVIDE(label, ...)                                     \
+#define DIVIDE(label, TRIGGERS, ...)                           \
    std::map<std::string, TGraphAsymmErrors*> g##label;         \
-   EGTRIGGERS(DIVIDEIMPL, label)
+   ACT(TRIGGERS, DIVIDEIMPL, label)
 #define DIVIDEIMPL(TRIGGER, label)                             \
    g##label.emplace(#TRIGGER, new TGraphAsymmErrors(           \
       label[#TRIGGER].first->GetNbinsX() + 2));                \
@@ -215,13 +198,10 @@
       label[#TRIGGER].first, label[#TRIGGER].second,           \
       "c1=0.683 b(1,1) mode");
 
-#define GRAPH(label, tag, TSET)                                \
-   PAPER(label, tag, ( 0 TSET(COUNT)))                         \
-   TSET(STYLE, label) TSET(DRAW, label, tag)                   \
-   l##label##tag->Draw(); SAVE(label, tag)
-
-#define TOC(label, set, ...)                                   \
-   GRAPH(label, turnon_##set, set)
+#define GRAPH(label, TRIGGERS, ...)                            \
+   PAPER(label, to##TRIGGERS, ( 0 TRIGGERS(COUNT)))            \
+   TRIGGERS(STYLE, label) TRIGGERS(DRAW, label, to##TRIGGERS)  \
+   lg##label##to##TRIGGERS->Draw(); SAVE(label, to##TRIGGERS)
 
 #define AUTOYRANGE(label, TRIGGER)                             \
    hfr##label##TRIGGER->SetAxisRange(                          \
@@ -229,14 +209,14 @@
          label[#TRIGGER].first->GetMaximumBin()) * 1.2, "Y");  \
 
 #define DISTRN(label, TRIGGERS, ...)                           \
-   TRIGGERS(DISTRNIMPL, label)
+   ACT(TRIGGERS, DISTRNIMPL, label)
 #define DISTRNIMPL(TRIGGER, label)                             \
    PAPER(v##label, TRIGGER, 1) AUTOYRANGE(v##label, TRIGGER)   \
    DECORATE(v##label[#TRIGGER].first)                          \
    PAINT(TRIGGER, v##label, v##label[#TRIGGER].first, pe)      \
-   l##v##label##TRIGGER->Draw(); SAVE(v##label, TRIGGER)       \
+   lg##v##label##TRIGGER->Draw(); SAVE(v##label, TRIGGER)      \
    PAPER(v##label, e##TRIGGER, 1) DECORATE(e##label[#TRIGGER]) \
    PAINT(TRIGGER, v##label##e, e##label[#TRIGGER], pe)         \
-   l##v##label##e##TRIGGER->Draw(); SAVE(v##label, e##TRIGGER)
+   lg##v##label##e##TRIGGER->Draw(); SAVE(v##label, e##TRIGGER)
 
 #endif /* _DEFINES_H */
