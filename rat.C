@@ -125,10 +125,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       auto index = maxele - std::begin(*elePt);
       float maxPt = (*elePt)[index];
 
-      if ((*eleHoverE)[index] > 0.2) continue;
-
-      SEGTRIGGERS(FILL, loose, maxPt)
       FULLOFFLINEID(index)
+
       SEGTRIGGERS(FILL, tight, maxPt)
 
       if (fabs((*eleSCEta)[index]) < 1.4442)
@@ -141,8 +139,10 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       if (hiHF <= hfc5ev8[14])
       { SEGTRIGGERS(FILL, peripheral, maxPt) }
 
-      VARSPERELE(FILLPERELE, FWD, SEGTRIGGERS)
-      VARSPEREVT(FILLPEREVT, FWD, SEGTRIGGERS)
+      if (maxPt > 10) {
+         VARSPERELE(FILLPERELE, FWD, SEGTRIGGERS)
+         VARSPEREVT(FILLPEREVT, FWD, SEGTRIGGERS)
+      }
 
       DEBUG(HLT_Ele15GsfUM_v1,
          maxPt > 80, pt, (*elePt)[index])
@@ -154,11 +154,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
             index2 = j; maxPt2 = (*elePt)[j]; }}
 
       if (index2 == -1) continue;
-      if (maxPt2 < 10) continue;
-      if ((*eleHoverE)[index2] > 0.2) continue;
-
-      DEGTRIGGERSPT(FILL, loose, maxPt)
       FULLOFFLINEID(index2)
+
       DEGTRIGGERSPT(FILL, tight, maxPt)
 
       if (hiHF > hfc5ev8[14])

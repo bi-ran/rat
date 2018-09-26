@@ -32,7 +32,6 @@
 #include "lxjet.h"
 
 #define SELECTIONS(ACTION, ...)                                \
-   ACTION(loose, ## __VA_ARGS__, "H/E < 0.2")                  \
    ACTION(tight, ## __VA_ARGS__, "2015 veto ID")               \
    ACTION(barrel, ## __VA_ARGS__,                              \
       "barrel (|#eta_{SC}|<1.4442)")                           \
