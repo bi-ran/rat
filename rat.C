@@ -127,22 +127,11 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 
       FULLOFFLINEID(index)
 
-      SEGTRIGGERS(FILL, tight, maxPt)
-
-      if (fabs((*eleSCEta)[index]) < 1.4442)
-      { SEGTRIGGERS(FILL, barrel, maxPt) }
-      if (fabs((*eleSCEta)[index]) > 1.566)
-      { SEGTRIGGERS(FILL, endcap, maxPt) }
-
-      if (hiHF > hfc5ev8[14])
-      { SEGTRIGGERS(FILL, central, maxPt) }
-      if (hiHF <= hfc5ev8[14])
-      { SEGTRIGGERS(FILL, peripheral, maxPt) }
+      SELECTIONS(SELECT, SEGTRIGGERS, maxPt)
 
       if (maxPt > 10) {
          VARSPERELE(FILLPERELE, FWD, SEGTRIGGERS)
-         VARSPEREVT(FILLPEREVT, FWD, SEGTRIGGERS)
-      }
+         VARSPEREVT(FILLPEREVT, FWD, SEGTRIGGERS) }
 
       DEBUG(HLT_Ele15GsfUM_v1,
          maxPt > 80, pt, (*elePt)[index])
@@ -156,12 +145,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       if (index2 == -1) continue;
       FULLOFFLINEID(index2)
 
-      DEGTRIGGERSPT(FILL, tight, maxPt)
-
-      if (hiHF > hfc5ev8[14])
-      { DEGTRIGGERSPT(FILL, central, maxPt) }
-      if (hiHF <= hfc5ev8[14])
-      { DEGTRIGGERSPT(FILL, peripheral, maxPt) }
+      COMMONSLCTNS(SELECT, DEGTRIGGERSPT, maxPt)
    }
 
    std::map<std::string, int> colours;

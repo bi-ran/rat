@@ -102,6 +102,9 @@
 
 #define ACT(ACTION, ...) ACTION(__VA_ARGS__)
 
+#define SELECT(sel, TRIGGERS, val, condition, ...)             \
+   if (condition) { TRIGGERS(FILL, sel, val) }
+
 #define DEGTRIGGERSPT(ACTION, ...)                             \
    if (maxPt2 > 10) {                                          \
       DEGMIN10TRIGGERS(ACTION, ## __VA_ARGS__)                 \
@@ -155,7 +158,9 @@
    desc.emplace(#label, std::make_pair(info, title));          \
    TRIGGERS(BOOK, label, nbins, bins)
 
-#define SELSETUP(sel, TRIGGERS, info)                          \
+#define SELSETUP(sel, TRIGGERS, a0, info)                      \
+   SELSETUPIMPL(sel, TRIGGERS, info)
+#define SELSETUPIMPL(sel, TRIGGERS, info)                      \
    SETUP(sel, nptb, ptb, info, ";p_{T};efficiency", TRIGGERS)
 
 #define VARSETUP(var, TRIGGERS, a0, a1, a2, a3, info, title)   \

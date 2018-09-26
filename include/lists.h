@@ -32,13 +32,23 @@
 #include "lxjet.h"
 
 #define SELECTIONS(ACTION, ...)                                \
-   ACTION(tight, ## __VA_ARGS__, "2015 veto ID")               \
+   COMMONSLCTNS(ACTION, __VA_ARGS__)                           \
+   SEGSLCTNS(ACTION, __VA_ARGS__)
+
+#define COMMONSLCTNS(ACTION, ...)                              \
+   ACTION(tight, ## __VA_ARGS__, true, "2015 veto ID")         \
+   ACTION(central, ## __VA_ARGS__,                             \
+      hiHF > hfc5ev8[14], "0 - 30% centrality")                \
+   ACTION(peripheral, ## __VA_ARGS__,                          \
+      hiHF <= hfc5ev8[14], "30 - 100% centrality")
+
+#define SEGSLCTNS(ACTION, ...)                                 \
    ACTION(barrel, ## __VA_ARGS__,                              \
+      std::abs((*eleSCEta)[index]) < 1.4442,                   \
       "barrel (|#eta_{SC}|<1.4442)")                           \
    ACTION(endcap, ## __VA_ARGS__,                              \
-      "endcap (|#eta_{SC}|>1.566)")                            \
-   ACTION(central, ## __VA_ARGS__, "0 - 30% centrality")       \
-   ACTION(peripheral, ## __VA_ARGS__, "30 - 100% centrality")
+      std::abs((*eleSCEta)[index]) > 1.566,                    \
+      "endcap (|#eta_{SC}|>1.566)")
 
 #define VARSPERELE(ACTION, ...)                                \
    ACTION(elePt, ## __VA_ARGS__, float, 40, 0, 200,            \
