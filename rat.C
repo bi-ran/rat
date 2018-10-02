@@ -133,7 +133,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
          VARSPERELE(FILLPERELE, FWD, SEGTRIGGERS)
          VARSPEREVT(FILLPEREVT, FWD, SEGTRIGGERS) }
 
-      DEBUG(HLT_Ele15GsfUM_v1,
+      DEBUG(HLT_HIEle15Gsf_v1,
          maxPt > 80, pt, (*elePt)[index])
 
       int index2 = -1; float maxPt2 = 0.;
