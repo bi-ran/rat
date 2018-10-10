@@ -35,6 +35,10 @@
    ACTION(HLT_HIL3Mu7Eta2p5_PuAK4CaloJet60Eta2p1_v1, ## __VA_ARGS__) \
    ACTION(HLT_HIL3Mu7Eta2p5_PuAK4CaloJet80Eta2p1_v1, ## __VA_ARGS__) \
    ACTION(HLT_HIL3Mu7Eta2p5_PuAK4CaloJet100Eta2p1_v1, ## __VA_ARGS__)\
+   ACTION(HLT_HIL3Mu3Eta2p5_PuAK4CaloJet40Eta2p1_FilterDr_v1, ## __VA_ARGS__) \
+   ACTION(HLT_HIL3Mu3Eta2p5_PuAK4CaloJet60Eta2p1_FilterDr_v1, ## __VA_ARGS__) \
+   ACTION(HLT_HIL3Mu3Eta2p5_PuAK4CaloJet80Eta2p1_FilterDr_v1, ## __VA_ARGS__) \
+   ACTION(HLT_HIL3Mu3Eta2p5_PuAK4CaloJet100Eta2p1_FilterDr_v1, ## __VA_ARGS__)\
    ACTION(HLT_HIEle10Gsf_PuAK4CaloJet40Eta2p1_v1, ## __VA_ARGS__)    \
    ACTION(HLT_HIEle10Gsf_PuAK4CaloJet60Eta2p1_v1, ## __VA_ARGS__)    \
    ACTION(HLT_HIEle10Gsf_PuAK4CaloJet80Eta2p1_v1, ## __VA_ARGS__)    \
