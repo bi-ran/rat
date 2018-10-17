@@ -157,13 +157,16 @@
 
 #define VAREFF(var, TRIGGERS, ...)                             \
    std::map<std::string, TGraphAsymmErrors*> e##var;           \
-   ACT(TRIGGERS, VAREFFIMPL, var)
-#define VAREFFIMPL(TRIGGER, var)                               \
-   e##var[#TRIGGER] = new TGraphAsymmErrors(                   \
-      v##var[#TRIGGER].first->GetNbinsX() + 2);                \
-   e##var[#TRIGGER]->Divide(                                   \
-      v##var[#TRIGGER].first, v##var[#TRIGGER].second,         \
-      "c1=0.683 b(1,1) mode");
+   ACT(TRIGGERS, DIVIDE, v##var, e##var)
+
+#define EFFICIENCY(label, TRIGGERS, ...)                       \
+   ACT(TRIGGERS, DIVIDE, label, g##label)
+
+#define DIVIDE(TRIGGER, input, output)                         \
+   output.emplace(#TRIGGER, new TGraphAsymmErrors(             \
+      input[#TRIGGER].first->GetNbinsX() + 2));                \
+   output[#TRIGGER]->Divide(input[#TRIGGER].first,             \
+      input[#TRIGGER].second, "c1=0.683 b(1,1) mode");
 
 #define PAPER(l, t, n)                                         \
    TCanvas* c##l##t = new TCanvas("c" #l #t, "", 400, 400);    \
@@ -194,15 +197,6 @@
       "figs/pdf/" #label "-" #tag "-%s.pdf", output));         \
    c##label##tag->SaveAs(Form(                                 \
       "figs/png/" #label "-" #tag "-%s.png", output));
-
-#define DIVIDE(label, TRIGGERS, ...)                           \
-   ACT(TRIGGERS, DIVIDEIMPL, label)
-#define DIVIDEIMPL(TRIGGER, label)                             \
-   g##label.emplace(#TRIGGER, new TGraphAsymmErrors(           \
-      label[#TRIGGER].first->GetNbinsX() + 2));                \
-   g##label[#TRIGGER]->Divide(                                 \
-      label[#TRIGGER].first, label[#TRIGGER].second,           \
-      "c1=0.683 b(1,1) mode");
 
 #define GRAPH(label, TRIGGERS, ...)                            \
    PAPER(label, to##TRIGGERS, ( 0 TRIGGERS(COUNT)))            \
