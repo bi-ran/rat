@@ -28,8 +28,8 @@
    ACTION(HLT_HIDoubleEle10GsfMass50_v1, ## __VA_ARGS__)
 
 #include "egxmu.h"
-
 #include "lxjet.h"
+#include "l1seeds.h"
 
 #define SELECTIONS(ACTION, ...)                                \
    COMMONSLCTNS(ACTION, ## __VA_ARGS__)                        \

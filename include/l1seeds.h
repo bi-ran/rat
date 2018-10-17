@@ -1,0 +1,49 @@
+#define L1SEEDS(ACTION, ...)                                         \
+   ACTION(L1_ZeroBias, ## __VA_ARGS__)                               \
+   ACTION(L1_MinimumBiasHF1_AND_BptxAND, ## __VA_ARGS__)             \
+   ACTION(L1_MinimumBiasHF1_OR_BptxAND, ## __VA_ARGS__)              \
+   ACTION(L1_MinimumBiasHF2_AND_BptxAND, ## __VA_ARGS__)             \
+   ACTION(L1_MinimumBiasHF2_OR_BptxAND, ## __VA_ARGS__)              \
+   ACTION(L1_SingleEG5_SingleJet28_MidEta2p7, ## __VA_ARGS__)        \
+   ACTION(L1_SingleEG5_SingleJet32_MidEta2p7, ## __VA_ARGS__)        \
+   ACTION(L1_SingleEG5_SingleJet40_MidEta2p7, ## __VA_ARGS__)        \
+   ACTION(L1_SingleEG7_SingleJet32_MidEta2p7, ## __VA_ARGS__)        \
+   ACTION(L1_SingleEG7_SingleJet40_MidEta2p7, ## __VA_ARGS__)        \
+   ACTION(L1_SingleEG12_SingleJet32_MidEta2p7, ## __VA_ARGS__)       \
+   ACTION(L1_SingleEG12_SingleJet40_MidEta2p7, ## __VA_ARGS__)       \
+   ACTION(L1_DoubleEG2_BptxAND, ## __VA_ARGS__)                      \
+   ACTION(L1_DoubleEG5_BptxAND, ## __VA_ARGS__)                      \
+   ACTION(L1_DoubleEG8_BptxAND, ## __VA_ARGS__)                      \
+   ACTION(L1_DoubleEG10_BptxAND, ## __VA_ARGS__)                     \
+   ACTION(L1_SingleMu3_SingleEG12, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu3_SingleEG15, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu3_SingleEG20, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu3_SingleEG30, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu5_SingleEG10, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu5_SingleEG12, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu5_SingleEG15, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu5_SingleEG20, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu7_SingleEG7, ## __VA_ARGS__)                    \
+   ACTION(L1_SingleMu7_SingleEG10, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu7_SingleEG12, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu7_SingleEG15, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu12_SingleEG7, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMuOpen_BptxAND, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleMu3_SingleJet28_MidEta2p7, ## __VA_ARGS__)        \
+   ACTION(L1_SingleMu3_SingleJet32_MidEta2p7, ## __VA_ARGS__)        \
+   ACTION(L1_SingleMu3_SingleJet40_MidEta2p7, ## __VA_ARGS__)        \
+   ACTION(L1_SingleIsoEG3_BptxAND, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleIsoEG7_BptxAND, ## __VA_ARGS__)                   \
+   ACTION(L1_SingleIsoEG12_BptxAND, ## __VA_ARGS__)                  \
+   ACTION(L1_SingleIsoEG15_BptxAND, ## __VA_ARGS__)                  \
+   ACTION(L1_SingleIsoEG21_BptxAND, ## __VA_ARGS__)                  \
+   EGL1SEEDS(ACTION, ...)
+
+#define EGL1SEEDS(ACTION, ...)                                       \
+   ACTION(L1_SingleEG3_BptxAND, ## __VA_ARGS__)                      \
+   ACTION(L1_SingleEG5_BptxAND, ## __VA_ARGS__)                      \
+   ACTION(L1_SingleEG7_BptxAND, ## __VA_ARGS__)                      \
+   ACTION(L1_SingleEG12_BptxAND, ## __VA_ARGS__)                     \
+   ACTION(L1_SingleEG15_BptxAND, ## __VA_ARGS__)                     \
+   ACTION(L1_SingleEG21_BptxAND, ## __VA_ARGS__)                     \
+   ACTION(L1_SingleEG30_BptxAND, ## __VA_ARGS__)
