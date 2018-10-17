@@ -86,6 +86,7 @@
 
 #define DECLARE(label, info, title)                            \
    std::map<std::string, std::pair<TH1F*, TH1F*>> label;       \
+   std::map<std::string, TGraphAsymmErrors*> g##label;         \
    desc.emplace(#label, std::make_pair(info, title));
 
 #define BOOK(TRIGGER, label, nbins, bins)                      \
@@ -195,7 +196,6 @@
       "figs/png/" #label "-" #tag "-%s.png", output));
 
 #define DIVIDE(label, TRIGGERS, ...)                           \
-   std::map<std::string, TGraphAsymmErrors*> g##label;         \
    ACT(TRIGGERS, DIVIDEIMPL, label)
 #define DIVIDEIMPL(TRIGGER, label)                             \
    g##label.emplace(#TRIGGER, new TGraphAsymmErrors(           \
