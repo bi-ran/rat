@@ -81,6 +81,13 @@
 #define SETPEREVT(var, tree, type, ...)                        \
    SETVAR(type, var, tree)
 
+#define SELDECL(sel, a0, info)                                 \
+   DECLARE(sel, info, ";p_{T};efficiency;")
+
+#define DECLARE(label, info, title)                            \
+   std::map<std::string, std::pair<TH1F*, TH1F*>> label;       \
+   desc.emplace(#label, std::make_pair(info, title));
+
 #define BOOK(TRIGGER, label, nbins, bins)                      \
    label.emplace(#TRIGGER, std::make_pair(                     \
       new TH1F(#label "_pass_" #TRIGGER, "", nbins, bins),     \
@@ -133,20 +140,19 @@
    obj->Draw("same " #opt);                                    \
    lg##label##TRIGGER->AddEntry(obj, #TRIGGER, "pl");
 
-#define SETUP(label, TRIGGERS, nbins, bins, info, title)       \
-   std::map<std::string, std::pair<TH1F*, TH1F*>> label;       \
-   desc.emplace(#label, std::make_pair(info, title));          \
+#define SETUP(label, TRIGGERS, nbins, bins)                    \
    TRIGGERS(BOOK, label, nbins, bins)
 
-#define SELSETUP(sel, TRIGGERS, a0, info)                      \
-   SELSETUPIMPL(sel, TRIGGERS, info)
-#define SELSETUPIMPL(sel, TRIGGERS, info)                      \
-   SETUP(sel, TRIGGERS, nptb, ptb, info, ";p_{T};efficiency")
+#define SELSETUP(sel, TRIGGERS, ...)                           \
+   SELSETUPIMPL(sel, TRIGGERS)
+#define SELSETUPIMPL(sel, TRIGGERS)                            \
+   SETUP(sel, TRIGGERS, nptb, ptb)
 
 #define VARSETUP(var, TRIGGERS, a0, a1, a2, a3, info, title)   \
    VARSETUPIMPL(var, TRIGGERS, info, title)
 #define VARSETUPIMPL(var, TRIGGERS, info, title)               \
-   SETUP(v##var, TRIGGERS, n##var##b, var##b, info, title)
+   DECLARE(v##var, info, title);                               \
+   SETUP(v##var, TRIGGERS, n##var##b, var##b)
 
 #define VAREFF(var, TRIGGERS, ...)                             \
    std::map<std::string, TGraphAsymmErrors*> e##var;           \
