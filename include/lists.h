@@ -32,8 +32,8 @@
 #include "lxjet.h"
 
 #define SELECTIONS(ACTION, ...)                                \
-   COMMONSLCTNS(ACTION, __VA_ARGS__)                           \
-   SEGSLCTNS(ACTION, __VA_ARGS__)
+   COMMONSLCTNS(ACTION, ## __VA_ARGS__)                        \
+   SEGSLCTNS(ACTION, ## __VA_ARGS__)
 
 #define COMMONSLCTNS(ACTION, ...)                              \
    ACTION(tight, ## __VA_ARGS__, true, "2015 veto ID")         \
