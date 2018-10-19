@@ -96,6 +96,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 
    EGTRIGGERS(SETBRANCH, thlt, int)
    L1SEGSEEDS(SETBRANCH, thlt, int)
+   ELEXJETPATHS(SETBRANCH, thlt, int)
    VARSPERELE(SETPERELE, teg)
    VARSPEREVT(SETPEREVT, teg)
 
@@ -109,6 +110,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    SELECTIONS(SELDECL)
    SELECTIONS(SELSETUP, EGTRIGGERS)
    SELECTIONS(SELSETUP, L1SEGSEEDS)
+   SELECTIONS(SELSETUP, ELEXJETPATHS)
 
    ALLVARS(BIN)
    ALLVARS(VARSETUP, SEGTRIGGERS)
@@ -133,6 +135,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 
       SELECTIONS(SELECT, SEGTRIGGERS, maxPt)
       SELECTIONS(SELECT, L1SEGSEEDS, maxPt)
+      SELECTIONS(SELECT, ELEXJETPATHS, maxPt)
 
       if (maxPt > 10) {
          VARSPERELE(FILLPERELE, FWD, SEGTRIGGERS)
@@ -158,9 +161,11 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 
    SELECTIONS(EFFICIENCY, EGTRIGGERS)
    SELECTIONS(EFFICIENCY, L1SEGSEEDS)
+   SELECTIONS(EFFICIENCY, ELEXJETPATHS)
    SELECTIONS(GRAPH, SEGTRIGGERS)
    SELECTIONS(GRAPH, DEGTRIGGERS)
    SELECTIONS(GRAPH, L1SEGSEEDS)
+   SELECTIONS(GRAPH, ELEXJETPATHS)
 
    ALLVARS(VAREFF, SEGTRIGGERS)
    ALLVARS(DISTRN, SEGTRIGGERS)
