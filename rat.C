@@ -36,7 +36,7 @@ int rate(const char* input) {
    EGTRIGGERS(RATE, nentries)
    EGXMUTRIGGERS(RATE, nentries)
    LXJETTRIGGERS(RATE, nentries)
-   EGL1SEEDS(RATE, nentries)
+   L1SEGSEEDS(RATE, nentries)
 
    return 0;
 }
@@ -95,7 +95,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    TH1::SetDefaultSumw2();
 
    EGTRIGGERS(SETBRANCH, thlt, int)
-   EGL1SEEDS(SETBRANCH, thlt, int)
+   L1SEGSEEDS(SETBRANCH, thlt, int)
    VARSPERELE(SETPERELE, teg)
    VARSPEREVT(SETPEREVT, teg)
 
@@ -108,7 +108,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       45, 50, 55, 60, 70, 80, 100, 120};
    SELECTIONS(SELDECL)
    SELECTIONS(SELSETUP, EGTRIGGERS)
-   SELECTIONS(SELSETUP, EGL1SEEDS)
+   SELECTIONS(SELSETUP, L1SEGSEEDS)
 
    ALLVARS(BIN)
    ALLVARS(VARSETUP, SEGTRIGGERS)
@@ -132,7 +132,7 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       FULLOFFLINEID(index)
 
       SELECTIONS(SELECT, SEGTRIGGERS, maxPt)
-      SELECTIONS(SELECT, EGL1SEEDS, maxPt)
+      SELECTIONS(SELECT, L1SEGSEEDS, maxPt)
 
       if (maxPt > 10) {
          VARSPERELE(FILLPERELE, FWD, SEGTRIGGERS)
@@ -157,10 +157,10 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    EGTRIGGERS(PALETTE)
 
    SELECTIONS(EFFICIENCY, EGTRIGGERS)
-   SELECTIONS(EFFICIENCY, EGL1SEEDS)
+   SELECTIONS(EFFICIENCY, L1SEGSEEDS)
    SELECTIONS(GRAPH, SEGTRIGGERS)
    SELECTIONS(GRAPH, DEGTRIGGERS)
-   SELECTIONS(GRAPH, EGL1SEEDS)
+   SELECTIONS(GRAPH, L1SEGSEEDS)
 
    ALLVARS(VAREFF, SEGTRIGGERS)
    ALLVARS(DISTRN, SEGTRIGGERS)
