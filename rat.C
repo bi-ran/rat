@@ -158,6 +158,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 
    std::map<std::string, int> colours;
    EGTRIGGERS(PALETTE)
+   L1SEGSEEDS(PALETTE)
+   ELEXJETPATHS(PALETTE)
 
    SELECTIONS(EFFICIENCY, EGTRIGGERS)
    SELECTIONS(EFFICIENCY, L1SEGSEEDS)
