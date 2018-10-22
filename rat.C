@@ -37,6 +37,7 @@ int rate(const char* input) {
    EGXMUTRIGGERS(RATE, nentries)
    LXJETTRIGGERS(RATE, nentries)
    L1SEGSEEDS(RATE, nentries)
+   L1DEGSEEDS(RATE, nentries)
 
    return 0;
 }
