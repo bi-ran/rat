@@ -161,6 +161,18 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    L1SEGSEEDS(PALETTE)
    ELEXJETPATHS(PALETTE)
 
+#define CUSTOM1(ACTION, ...)                                         \
+   ACTION(HLT_HIEle15Gsf_PuAK4CaloJet40Eta2p1_v1, ## __VA_ARGS__)    \
+   ACTION(HLT_HIEle10Gsf_PuAK4CaloJet40Eta2p1_v1, ## __VA_ARGS__)    \
+   ACTION(L1_SingleEG15_BptxAND, ## __VA_ARGS__)                     \
+   ACTION(L1_SingleEG12_BptxAND, ## __VA_ARGS__)
+
+#define CUSTOM2(ACTION, ...)                                         \
+   ACTION(HLT_HIEle15Gsf_v1, ## __VA_ARGS__)                         \
+   ACTION(HLT_HIEle10Gsf_v1, ## __VA_ARGS__)                         \
+   ACTION(L1_SingleEG15_BptxAND, ## __VA_ARGS__)                     \
+   ACTION(L1_SingleEG12_BptxAND, ## __VA_ARGS__)
+
    SELECTIONS(EFFICIENCY, EGTRIGGERS)
    SELECTIONS(EFFICIENCY, L1SEGSEEDS)
    SELECTIONS(EFFICIENCY, ELEXJETPATHS)
@@ -168,6 +180,8 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    SELECTIONS(GRAPH, DEGTRIGGERS)
    SELECTIONS(GRAPH, L1SEGSEEDS)
    SELECTIONS(GRAPH, ELEXJETPATHS)
+   SELECTIONS(GRAPH, CUSTOM1)
+   SELECTIONS(GRAPH, CUSTOM2)
 
    ALLVARS(VAREFF, SEGTRIGGERS)
    ALLVARS(DISTRN, SEGTRIGGERS)
