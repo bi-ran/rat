@@ -1,5 +1,5 @@
 #define LXJETTRIGGERS(ACTION, ...)                                   \
-   ACTION(ELEXJETPATHS, ## __VA_ARGS__)                              \
+   ELEXJETPATHS(ACTION, ## __VA_ARGS__)                              \
    ACTION(HLT_HIL1Mu3Eta2p5_PuAK4CaloJet40Eta2p1_v1, ## __VA_ARGS__) \
    ACTION(HLT_HIL1Mu3Eta2p5_PuAK4CaloJet60Eta2p1_v1, ## __VA_ARGS__) \
    ACTION(HLT_HIL1Mu3Eta2p5_PuAK4CaloJet80Eta2p1_v1, ## __VA_ARGS__) \
