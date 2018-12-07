@@ -36,8 +36,6 @@ int rate(const char* input) {
    EGTRIGGERS(RATE, nentries)
    EGXMUTRIGGERS(RATE, nentries)
    LXJETTRIGGERS(RATE, nentries)
-   L1SEGSEEDS(RATE, nentries)
-   L1DEGSEEDS(RATE, nentries)
 
    return 0;
 }
@@ -96,8 +94,6 @@ int turnon(const char* hlt, const char* skim, const char* output) {
    TH1::SetDefaultSumw2();
 
    EGTRIGGERS(SETBRANCH, thlt, int)
-   L1SEGSEEDS(SETBRANCH, thlt, int)
-   ELEXJETPATHS(SETBRANCH, thlt, int)
    VARSPERELE(SETPERELE, teg)
    VARSPEREVT(SETPEREVT, teg)
 
@@ -110,8 +106,6 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       45, 50, 55, 60, 70, 80, 100, 120};
    SELECTIONS(SELDECL)
    SELECTIONS(SELSETUP, EGTRIGGERS)
-   SELECTIONS(SELSETUP, L1SEGSEEDS)
-   SELECTIONS(SELSETUP, ELEXJETPATHS)
 
    ALLVARS(BIN)
    ALLVARS(VARSETUP, SEGTRIGGERS)
@@ -135,15 +129,12 @@ int turnon(const char* hlt, const char* skim, const char* output) {
       FULLOFFLINEID(index)
 
       SELECTIONS(SELECT, SEGTRIGGERS, maxPt)
-      SELECTIONS(SELECT, L1SEGSEEDS, maxPt)
-      SELECTIONS(SELECT, ELEXJETPATHS, maxPt)
 
       if (maxPt > 10) {
          VARSPERELE(FILLPERELE, FWD, SEGTRIGGERS)
          VARSPEREVT(FILLPEREVT, FWD, SEGTRIGGERS) }
 
-      DEBUG(HLT_HIEle15Gsf_v1,
-         maxPt > 80, pt, (*elePt)[index])
+      DEBUG(HLT_HIEle15Gsf_v1, maxPt > 80, pt, (*elePt)[index])
 
       int index2 = -1; float maxPt2 = 0.;
       for (std::size_t j=0; j<elePt->size()
@@ -159,30 +150,10 @@ int turnon(const char* hlt, const char* skim, const char* output) {
 
    std::map<std::string, int> colours;
    EGTRIGGERS(PALETTE)
-   L1SEGSEEDS(PALETTE)
-   ELEXJETPATHS(PALETTE)
-
-#define CUSTOM1(ACTION, ...)                                         \
-   ACTION(HLT_HIEle15Gsf_PuAK4CaloJet40Eta2p1_v1, ## __VA_ARGS__)    \
-   ACTION(HLT_HIEle10Gsf_PuAK4CaloJet40Eta2p1_v1, ## __VA_ARGS__)    \
-   ACTION(L1_SingleEG15_BptxAND, ## __VA_ARGS__)                     \
-   ACTION(L1_SingleEG12_BptxAND, ## __VA_ARGS__)
-
-#define CUSTOM2(ACTION, ...)                                         \
-   ACTION(HLT_HIEle15Gsf_v1, ## __VA_ARGS__)                         \
-   ACTION(HLT_HIEle10Gsf_v1, ## __VA_ARGS__)                         \
-   ACTION(L1_SingleEG15_BptxAND, ## __VA_ARGS__)                     \
-   ACTION(L1_SingleEG12_BptxAND, ## __VA_ARGS__)
 
    SELECTIONS(EFFICIENCY, EGTRIGGERS)
-   SELECTIONS(EFFICIENCY, L1SEGSEEDS)
-   SELECTIONS(EFFICIENCY, ELEXJETPATHS)
    SELECTIONS(GRAPH, SEGTRIGGERS)
    SELECTIONS(GRAPH, DEGTRIGGERS)
-   SELECTIONS(GRAPH, L1SEGSEEDS)
-   SELECTIONS(GRAPH, ELEXJETPATHS)
-   SELECTIONS(GRAPH, CUSTOM1)
-   SELECTIONS(GRAPH, CUSTOM2)
 
    ALLVARS(VAREFF, SEGTRIGGERS)
    ALLVARS(DISTRN, SEGTRIGGERS)
